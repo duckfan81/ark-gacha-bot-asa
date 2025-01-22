@@ -1,0 +1,106 @@
+from stations import gacha
+import ark 
+import settings
+from stations import render
+import time
+from stations import pego 
+from stations import deposit
+from abc import ABC ,abstractmethod
+global berry_station
+berry_station = True
+
+class base_task(ABC):
+    def __init__(self):
+        self.has_run_before = False
+        
+    @abstractmethod
+    def execute(self):
+        pass
+    @abstractmethod
+    def get_priority_level(self):
+        pass
+    @abstractmethod
+    def get_requeue_delay(self):
+        pass
+    
+    def mark_as_run(self):
+        self.has_run_before = True
+
+class gacha_station(base_task):
+    def __init__(self,name,teleporter_name,direction):
+        super().__init__()
+        self.name = name
+        self.teleporter_name = teleporter_name
+        self.direction = direction
+
+    def execute(self):
+        ark.check_state()
+        global berry_station
+        temp = False
+        
+        if berry_station: 
+            ark.teleport_not_default(settings.berry_station)
+            if settings.external_berry: 
+                time.sleep(20)#letting station spawn in if you have to tp away
+            gacha.berry_station()
+            berry_station = False
+            temp = True
+        
+        ark.teleport_not_default(settings.iguanadon) # iguanadon is a centeral tp
+        
+        if settings.external_berry and temp: # quick fix for level 1 bug
+            ark.console_write("reconnect")
+            time.sleep(60) # takes a while for the reonnect to actually go into action
+
+        gacha.iguanadon()
+        ark.teleport_not_default(self.teleporter_name)
+        gacha.gacha_dropoff(self.direction)
+
+    def get_priority_level(self):
+        return 2
+    
+    def get_requeue_delay(self):
+        delay = 6600    # delay can be static as it will be the same for all gachas 142 stacks took 110 mins
+        return delay 
+
+class pego_station(base_task):
+    def __init__(self,name,teleporter_name,delay):
+        super().__init__()
+        self.name = name
+        self.teleporter_name = teleporter_name
+        self.delay = delay
+
+    def execute(self):
+        ark.check_state()
+        ark.teleport_not_default(self.teleporter_name)
+        pego.pego_pickup()
+        
+        ark.teleport_not_default(settings.drop_off) # everytime you collect you have to drop off makes sense to include it into here 
+        deposit.deposit_all()
+
+    def get_priority_level(self):
+        return 1 # highest prio level as we cant have these get capped 
+
+    def get_requeue_delay(self):
+        return self.delay # delay cannot be constant as stations can cover different amounts of space each |||| 2 stacks of berries to 1 crystal 4 gachas to 1 pego
+    
+    
+class render_station(base_task):
+    def __init__(self):
+        super().__init__()
+        self.name = settings.bed_spawn
+        
+    def execute(self):
+        global berry_station 
+        berry_station = True # setting to true as we will be away for mostlikly for a few hours
+        if render.render_flag == False:
+            ark.check_state()
+            ark.teleport_not_default(settings.bed_spawn)
+            render.enter_tekpod()
+        
+    def get_priority_level(self):
+        return 8
+
+    def get_requeue_delay(self):
+        return 90 # after triggered we will wait for 60 seconds reduces the amount of cpu usage 
+    
