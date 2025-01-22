@@ -12,7 +12,7 @@ intents.presences = True
 intents.members = True
 
 pyautogui.FAILSAFE = False
-bot = commands.Bot(command_prefix="%", intents=intents)
+bot = commands.Bot(command_prefix=settings.command_prefix, intents=intents)
 
 
 def load_json(json_file:str):
