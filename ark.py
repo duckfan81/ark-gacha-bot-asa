@@ -283,14 +283,13 @@ def teleport_not_default(teleporter_name:str):
         time.sleep(0.1)          # would cause a inf loop
     count = 0
 
-    while template.check_template("tribelog_check",0.8) == False and count < 100: # stopping inf loops 
+    while template.check_template_no_bounds("tribelog_check",0.8) == False and count < 100: # stopping inf loops 
         utils.press_key("ShowTribeManager")
         time.sleep(0.1)
-        count += 1
-
-    if template.check_template("tribelog_check",0.8):
-        time.sleep(1)
-        windows.click(variables.close_inv_x,variables.close_inv_y) # now ready to do whatever we need to 
+        count +=1
+        
+    time.sleep(1)
+    windows.click(variables.close_inv_x,variables.close_inv_y) # now ready to do whatever we need to 
         
     template.window_still_open("tribelog_check",0.8,2)
     time.sleep(0.4)
