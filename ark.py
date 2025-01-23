@@ -41,9 +41,9 @@ def open_structure():
     if template.template_sleep("inventory",0.7,2) == False:
         utils.press_key("AccessInventory")
         template.template_sleep("inventory",0.7,2)
-   
-    if template.template_sleep("waiting_inv",0.8,2): # if the waiting_inv is shown on the screen in the 2 seconds after inventory apears 
-        template.window_still_open("waiting_inv",0.8,5) # if server is laggy might take a while to get the data from the object
+    if settings.singleplayer == False: # in single player i havent had the issue of the waiting screen
+        if template.template_sleep("waiting_inv",0.8,2): # if the waiting_inv is shown on the screen in the 2 seconds after inventory apears 
+            template.window_still_open("waiting_inv",0.8,5) # if server is laggy might take a while to get the data from the object
     
 def dedi_withdraw(amount:int):
     time.sleep(0.1)
