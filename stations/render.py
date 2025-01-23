@@ -18,7 +18,7 @@ def enter_tekpod():
     utils.set_yaw(settings.station_yaw)
     time.sleep(1)
     pyautogui.keyDown(local_player.get_input_settings("Use"))
-    if template.template_sleep("bed_radical",0.63,2) == False:
+    if template.template_sleep_no_bounds("bed_radical",0.60,2) == False:
         time.sleep(1)
         utils.zero()
         utils.set_yaw(settings.station_yaw)

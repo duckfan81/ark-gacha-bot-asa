@@ -36,6 +36,15 @@ def template_sleep(template:str,threshold:float,sleep_amount:float) -> bool:
         count += 1
     return check_template(template,threshold)
 
+def template_sleep_no_bounds(template:str,threshold:float,sleep_amount:float) -> bool:
+    count = 0 
+    while check_template_no_bounds(template,threshold) == False:
+        if count >= sleep_amount * 10 : #  seconds of sleep
+            break    
+        time.sleep(0.1)
+        count += 1
+    return check_template_no_bounds(template,threshold)
+
 def window_still_open(template:str,threshold:float,sleep_amount:float) -> bool: # oposite of the function above mainly to check if inventory is still open
     count = 0
     while check_template(template,threshold) == True:
@@ -44,6 +53,15 @@ def window_still_open(template:str,threshold:float,sleep_amount:float) -> bool: 
         time.sleep(0.1)
         count += 1
     return check_template(template,threshold)
+
+def window_still_open_no_bounds(template:str,threshold:float,sleep_amount:float) -> bool: # oposite of the function above mainly to check if inventory is still open
+    count = 0
+    while check_template_no_bounds(template,threshold) == True:
+        if count >= sleep_amount * 10 : #  seconds of sleep
+            break    
+        time.sleep(0.1)
+        count += 1
+    return check_template_no_bounds(template,threshold)
 
 def check_template(item:str, threshold:float) -> bool:
     

@@ -12,6 +12,7 @@ external_berry = True # True or False
 height_ele = 2
 height_grind = 3
 command_prefix = "%"
+singleplayer = False
 # you need to put in you channel IDs and you bot API
 log_channel_gacha = 111111111111111
 log_active_queue = 111111111111111

@@ -17,6 +17,7 @@ global first_run
 first_run = True
 
 def ini():
+    time.sleep(0.2)
     if template.check_template_no_bounds("console",0.55) == False:
         utils.press_key("ConsoleKeys")
 
@@ -237,13 +238,15 @@ def bed_spawn_in(bed_name:str):
         time.sleep(0.1)
 
     time.sleep(10) # animation spawn in is about 7 seconds 
-    while template.check_template("tribelog_check",0.8) == False:
+    while template.check_template("tribelog_check",0.8) == False and count < 100: # stopping inf loops 
         utils.press_key("ShowTribeManager")
         time.sleep(0.1)
+        count += 1
     
     time.sleep(0.5)
     windows.click(variables.close_inv_x,variables.close_inv_y) # now ready to do whatever we need to 
-    time.sleep(0.5)
+    template.window_still_open("tribelog_check",0.8,2)
+
     global first_run
     if first_run:
         ini()
@@ -295,6 +298,9 @@ def teleport_not_default(teleporter_name:str):
     template.window_still_open("tribelog_check",0.8,2)
     
     time.sleep(0.4)
+    if settings.singleplayer: # correcting for singleplayers wierd tp mechanics
+        utils.current_pitch = 0
+        utils.turn_down(80)
     utils.turn_up(80)
     #utils.pitch_zero() # correcting pitch back to 0 from looking down at the tp
     time.sleep(0.4)
