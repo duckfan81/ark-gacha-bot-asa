@@ -1,4 +1,3 @@
-#can change
 screen_resolution = 1080 # 1440 or 1080 ONLY
 base_path = "D:/Games/Steam/steamapps/common/"
 iguanadon = "GACHAIGUANADON"

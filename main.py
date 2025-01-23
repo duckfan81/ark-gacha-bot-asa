@@ -142,8 +142,8 @@ async def list_pego(interaction: discord.Interaction):
     await interaction.response.send_message(response)
 
 
-@bot.command()
-async def start(ctx):
+@bot.tree.command()
+async def start(interaction: discord.Interaction):
 
     logchn = bot.get_channel(settings.log_channel_gacha) 
     if logchn:
@@ -159,7 +159,7 @@ async def start(ctx):
     bot.loop.create_task(send_new_logs())
     bot.loop.create_task(active_queue())
     bot.loop.create_task(wait_queue())
-    await ctx.send(f"starting up bot now you have 5 seconds before start")
+    await interaction.response.send_message(f"starting up bot now you have 5 seconds before start")
     time.sleep(5)
     asyncio.create_task(botoptions.task_manager_start())
 

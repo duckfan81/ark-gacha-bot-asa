@@ -1,1 +1,0 @@
-r.volumetriccloud 0 |grass.enable 0 |r.volumetricfog 0 |r.shadow.csm.maxcascades 0 |r.contactshadows 0 |wp.runtime.hlod 0 | r.PostProcessing.DisableMaterials 1 | sg.GlobalIlluminationQuality 2
