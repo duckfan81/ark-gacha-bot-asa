@@ -12,9 +12,10 @@ def pego_pickup():
     if template.template_sleep("inventory",0.7,2) == False:
         utils.turn_up(5)
         ark.open_structure()
-    ark.transfer_all_from()
-    time.sleep(0.2)
-    windows.click(variables.close_inv_x,variables.close_inv_y)
+    if template.check_template("inventory",0.7):
+        ark.transfer_all_from()
+        time.sleep(0.2)
+        windows.click(variables.close_inv_x,variables.close_inv_y) # prevents pego being FLUNG
     if template.template_sleep("inventory",0.7,2):
         time.sleep(3) # guessing timer hit waiting it out
         windows.click(variables.close_inv_x,variables.close_inv_y)
