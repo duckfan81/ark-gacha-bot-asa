@@ -7,10 +7,8 @@ import pyautogui
 import settings
 import json
 import time
-intents = discord.Intents.all()
-intents.presences = True
-intents.members = True
 
+intents = discord.Intents.default()
 pyautogui.FAILSAFE = False
 bot = commands.Bot(command_prefix=settings.command_prefix, intents=intents)
 
