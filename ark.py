@@ -40,7 +40,7 @@ def open_structure():
     if template.template_sleep("inventory",0.7,2) == False:
         utils.press_key("AccessInventory")
         template.template_sleep("inventory",0.7,2)
-
+   
     if template.template_sleep("waiting_inv",0.8,2): # if the waiting_inv is shown on the screen in the 2 seconds after inventory apears 
         template.window_still_open("waiting_inv",0.8,5) # if server is laggy might take a while to get the data from the object
     
@@ -185,9 +185,9 @@ def console_ccc():
         count += 1
     if template.check_template_no_bounds("console",0.55):
         pyautogui.write("ccc") # for some reason utils.write doesnt register
-        time.sleep(0.4)
+        time.sleep(0.3)
         utils.press_key("Enter")
-        time.sleep(1) # slow to try and prevent opening clipboard to empty data
+        time.sleep(0.6) # slow to try and prevent opening clipboard to empty data
         win32clipboard.OpenClipboard()
         data = win32clipboard.GetClipboardData()
         win32clipboard.CloseClipboard()
@@ -283,15 +283,17 @@ def teleport_not_default(teleporter_name:str):
         time.sleep(0.1)          # would cause a inf loop
     count = 0
 
-    while template.check_template_no_bounds("tribelog_check",0.8) == False and count < 100: # stopping inf loops 
+    while template.check_template("tribelog_check",0.8) == False and count < 100: # stopping inf loops 
         utils.press_key("ShowTribeManager")
         time.sleep(0.1)
-        count +=1
-        
-    time.sleep(1)
-    windows.click(variables.close_inv_x,variables.close_inv_y) # now ready to do whatever we need to 
+        count += 1
+
+    if template.check_template("tribelog_check",0.8):
+        time.sleep(0.5)
+        windows.click(variables.close_inv_x,variables.close_inv_y) # now ready to do whatever we need to 
         
     template.window_still_open("tribelog_check",0.8,2)
+    
     time.sleep(0.4)
     utils.turn_up(80)
     #utils.pitch_zero() # correcting pitch back to 0 from looking down at the tp

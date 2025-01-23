@@ -1,0 +1,6 @@
+numpy 
+opencv-python
+mss 
+pyautogui 
+discord.py==2.3.2 
+pywin32 
