@@ -173,4 +173,8 @@ async def on_ready():
 api_key = settings.discord_api_key
 
 if __name__ =="__main__":
+    if len(settings.discord_api_key) < 4:
+        print("you need to have a valid discord API key for the bot to run")
+        print("please follow the instructions in the discord server to get your api key")
+        exit()
     bot.run(api_key)
