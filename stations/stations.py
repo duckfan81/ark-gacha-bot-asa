@@ -4,6 +4,7 @@ import settings
 from stations import render
 import time
 import template
+import discordbot
 from stations import pego 
 from stations import deposit
 from abc import ABC ,abstractmethod
@@ -78,6 +79,8 @@ class pego_station(base_task):
         if template.check_template("crystal_in_hotbar",0.7):
             ark.teleport_not_default(settings.drop_off) # everytime you collect you have to drop off makes sense to include it into here 
             deposit.deposit_all()
+        else:
+            discordbot.logger(f"no crystals in hotbar not dropping off")
 
     def get_priority_level(self):
         return 1 # highest prio level as we cant have these get capped 
