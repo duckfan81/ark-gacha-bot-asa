@@ -280,9 +280,11 @@ def teleport_not_default(teleporter_name:str):
     windows.click(variables.first_bed_slot_x,variables.first_bed_slot_y)
     time.sleep(0.2)
     windows.click(variables.spawn_button_x,variables.spawn_button_y)
-
-    time.sleep(1)          
-    while white_flash() == True:  #dont need white flash== False as if we are in render white flash will not appear on the screen   
+    count = 0
+    while white_flash() == False and count < 20:
+        count += 1
+        time.sleep(0.1)          
+    while white_flash() == True:    
         time.sleep(0.1)          # would cause a inf loop
     count = 0
 
