@@ -63,16 +63,23 @@ def iguanadon():
     time.sleep(0.2)
 
 def gacha_dropoff(direction):
-    
+    time.sleep(0.2)
     if direction == "right":
         utils.turn_right(40) 
     else:
         utils.turn_left(40)
     time.sleep(0.3)    
     ark.open_structure()
-
     #take all 
-    template.template_sleep("inventory",0.7 ,2)
+    if template.template_sleep("inventory",0.7 ,2) == False: # assuming that the bot didnt turn properly
+        utils.zero()
+        if direction == "right":
+            utils.turn_right(40) 
+        else:
+            utils.turn_left(40)
+        time.sleep(0.2)
+        ark.open_structure()
+        
     ark.transfer_all_from()
     time.sleep(0.5)
     if template.check_template_no_bounds("slot_capped",0.7):
