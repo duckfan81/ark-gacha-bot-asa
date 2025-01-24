@@ -15,7 +15,7 @@ def load_resolution_data(file_path):
 
 def open_crystals():
     count = 0
-    while template.check_template("crystal_in_hotbar",0.9) and count < 350: # count is alittle higher incase while pressing the button it doesnt triger
+    while template.check_template("crystal_in_hotbar",0.7) and count < 350: # count is alittle higher incase while pressing the button it doesnt triger
         for x in range(10):
             utils.press_key(f"UseItem{x+1}")
             count += 1
