@@ -169,14 +169,18 @@ def vaults():
         name = entry_vaults["name"]
         side = entry_vaults["side"]
         items = entry_vaults["items"]
-        
+        discordbot.logger(f"openening up {name} on the {side} side to depo{items}")
         vault_deposit(side,items)
 
 def deposit_all():
+    discordbot.logger("opening crystals")
     open_crystals()
+    discordbot.logger("depositing in ele dedi")
     dedi_deposit(settings.height_ele)
     vaults()
+    discordbot.logger("depositing in grinder")
     depo_grinder()
     ark.teleport_not_default(settings.grindables)
+    discordbot.logger("collecting grindables")
     collect_grindables()
 

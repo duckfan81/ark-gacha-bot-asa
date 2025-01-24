@@ -192,6 +192,8 @@ def console_ccc():
         win32clipboard.OpenClipboard()
         data = win32clipboard.GetClipboardData()
         win32clipboard.CloseClipboard()
+        if data == None:
+            console_ccc()
         ccc_data = data.split()
         return ccc_data
     

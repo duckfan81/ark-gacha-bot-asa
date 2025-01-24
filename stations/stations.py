@@ -43,6 +43,7 @@ class gacha_station(base_task):
         if berry_station: 
             ark.teleport_not_default(settings.berry_station)
             if settings.external_berry: 
+                discordbot.logger("sleeping for 20 seconds as external")
                 time.sleep(20)#letting station spawn in if you have to tp away
             gacha.berry_station()
             berry_station = False
@@ -51,6 +52,7 @@ class gacha_station(base_task):
         ark.teleport_not_default(settings.iguanadon) # iguanadon is a centeral tp
         
         if settings.external_berry and temp: # quick fix for level 1 bug
+            discordbot.logger("reconnecting because of level 1 bug - you chose external berry")
             ark.console_write("reconnect")
             time.sleep(60) # takes a while for the reonnect to actually go into action
 
