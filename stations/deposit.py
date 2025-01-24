@@ -104,9 +104,9 @@ def drop_useless():
         if template.window_still_open("inventory",0.7,2):
             time.sleep(3) # guessing timer hit
             windows.click(variables.close_inv_x,variables.close_inv_y)
-    time.sleep(1)
+    time.sleep(0.5)
     utils.turn_down(80)
-    time.sleep(1)
+    time.sleep(0.5)
     ark.open_structure()
     if template.template_sleep("inventory",0.7,2):
         ark.transfer_all_from() # dont need a close as a bag will disapear
