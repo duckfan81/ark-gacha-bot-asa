@@ -260,7 +260,7 @@ def bed_spawn_in(bed_name:str):
 
 def teleport_not_default(teleporter_name:str):
     
-    time.sleep(0.3)
+    time.sleep(0.5)
     utils.turn_down(80)    # include the looking down part into the teleport as it is common for everytime
     time.sleep(0.3)
     utils.press_key("Use")
