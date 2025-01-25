@@ -31,13 +31,12 @@ def enter_tekpod():
         windows.move_mouse(variables.radical_laydown_x,variables.radical_laydown_y)
         time.sleep(0.5)
         pyautogui.keyUp(local_player.get_input_settings("Use"))
-    if template.template_sleep_no_bounds("tek_pod_xp",0.7,4) and retry < 3:
+    if template.template_sleep_no_bounds("tek_pod_xp",0.7,4) == False and retry < 3:
         discordbot.logger("failed to get into the tekpod waiting 10 seconds before retrying")
         time.sleep(10)
         retry += 1
         ark.check_state()
         enter_tekpod()
-        
     if template.check_template_no_bounds("tek_pod_xp",0.7):
         discordbot.logger("NOW RENDERING STATION")
         retry = 0
