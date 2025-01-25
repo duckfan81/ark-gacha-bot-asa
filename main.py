@@ -12,6 +12,7 @@ intents = discord.Intents.default()
 pyautogui.FAILSAFE = False
 bot = commands.Bot(command_prefix=settings.command_prefix, intents=intents)
 
+running_tasks = []
 
 def load_json(json_file:str):
     try:
@@ -154,12 +155,28 @@ async def start(interaction: discord.Interaction):
         wait.write(f"")
     with open("txt_files/active.txt", 'w') as active:
         active.write(f"")
-    bot.loop.create_task(send_new_logs())
-    bot.loop.create_task(active_queue())
-    bot.loop.create_task(wait_queue())
+    running_tasks.append(bot.loop.create_task(send_new_logs()))
+    running_tasks.append(bot.loop.create_task(active_queue()))
+    running_tasks.append(bot.loop.create_task(wait_queue()))
+    
     await interaction.response.send_message(f"starting up bot now you have 5 seconds before start")
     time.sleep(5)
-    asyncio.create_task(botoptions.task_manager_start())
+    running_tasks.append(asyncio.create_task(botoptions.task_manager_start()))
+
+@bot.tree.command()
+async def end(interaction: discord.Interaction):
+    global running_tasks
+
+    for task in running_tasks:
+        task.cancel()
+        try:
+            await task
+        except asyncio.CancelledError:
+            pass
+
+    running_tasks.clear() 
+
+    await interaction.response.send_message("bot tasks have been stopped.")
 
 @bot.event
 async def on_ready():
