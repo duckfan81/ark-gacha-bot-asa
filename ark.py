@@ -241,6 +241,7 @@ def bed_spawn_in(bed_name:str):
         time.sleep(0.1)
 
     time.sleep(10) # animation spawn in is about 7 seconds 
+    count = 0
     while template.check_template("tribelog_check",0.8) == False and count < 100: # stopping inf loops 
         utils.press_key("ShowTribeManager")
         time.sleep(0.1)
