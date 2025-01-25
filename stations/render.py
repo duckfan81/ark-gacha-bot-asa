@@ -31,13 +31,13 @@ def enter_tekpod():
         windows.move_mouse(variables.radical_laydown_x,variables.radical_laydown_y)
         time.sleep(0.5)
         pyautogui.keyUp(local_player.get_input_settings("Use"))
-    if template.template_sleep("tek_pod_xp",0.7,2) and retry < 3:
+    if template.template_sleep_no_bounds("tek_pod_xp",0.7,2) and retry < 3:
         discordbot.logger("failed to get into the tekpod waiting 10 seconds before retrying")
         time.sleep(10)
         ark.check_state()
         enter_tekpod()
         retry += 1
-    if template.check_template("tek_pod_xp",0.7):
+    if template.check_template_no_bounds("tek_pod_xp",0.7):
         discordbot.logger("NOW RENDERING STATION")
         retry = 0
         render_flag = True
@@ -45,7 +45,7 @@ def enter_tekpod():
 def leave_tekpod():
     time.sleep(0.4)
     pyautogui.press(local_player.get_input_settings("Use"))
-    if template.window_still_open("tek_pod_xp",0.7,10): # long time for big timers 
+    if template.window_still_open_no_bounds("tek_pod_xp",0.7,10): # long time for big timers 
         pyautogui.press(local_player.get_input_settings("Use"))
     time.sleep(0.4)
     utils.current_yaw = settings.render_pushout
