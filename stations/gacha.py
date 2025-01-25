@@ -71,7 +71,7 @@ def gacha_dropoff(direction):
     time.sleep(0.3)    
     ark.open_structure()
     #take all 
-    if template.template_sleep("inventory",0.7 ,2) == False: # assuming that the bot didnt turn properly
+    if template.check_template("inventory",0.7) == False: # assuming that the bot didnt turn properly
         utils.zero()
         if direction == "right":
             utils.turn_right(40) 

@@ -143,7 +143,7 @@ def depo_grinder():
 def collect_grindables():
     time.sleep(0.5)
     utils.turn_right(90)
-    time.sleep(0.5)
+    time.sleep(0.75)
     ark.open_structure()
     if template.template_sleep("inventory",0.7,2) == False:
         time.sleep(2)
