@@ -97,7 +97,7 @@ def check_state():
         utils.yaw_zero()
         utils.set_yaw(settings.station_yaw)
 
-    if template.check_template_no_bounds("tek_pod_xp",0.7):
+    if template.check_template_no_bounds("tek_pod_xp",0.7) and render.render_flag == True:
         render.leave_tekpod()
 
     # if starving..... 
