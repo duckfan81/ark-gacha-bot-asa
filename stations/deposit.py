@@ -116,7 +116,7 @@ def drop_useless():
             windows.click(variables.close_inv_x,variables.close_inv_y)
     else:
         discordbot.logger("no bag dropped")
-    time.sleep(0.4)
+    time.sleep(0.8)
 
 
 def depo_grinder():
