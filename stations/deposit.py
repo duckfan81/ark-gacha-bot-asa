@@ -80,6 +80,7 @@ def vault_deposit(side,items):
     time.sleep(0.5)
 
 def drop_useless():
+    discordbot.logger("dropping all useless things")
     time.sleep(0.5)
     utils.press_key("Crouch")
     time.sleep(0.4)
@@ -178,9 +179,11 @@ def deposit_all():
     discordbot.logger("depositing in ele dedi")
     dedi_deposit(settings.height_ele)
     vaults()
-    discordbot.logger("depositing in grinder")
-    depo_grinder()
-    ark.teleport_not_default(settings.grindables)
-    discordbot.logger("collecting grindables")
-    collect_grindables()
-
+    if settings.height_grind != 0:
+        discordbot.logger("depositing in grinder")
+        depo_grinder()
+        ark.teleport_not_default(settings.grindables)
+        discordbot.logger("collecting grindables")
+        collect_grindables()
+    else:
+        drop_useless()

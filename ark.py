@@ -93,6 +93,7 @@ def transfer_all_inventory():
 def check_state():
     if template.check_template("beds_title",0.7):
         bed_spawn_in(settings.bed_spawn)
+        time.sleep(0.5)
         utils.yaw_zero()
         utils.set_yaw(settings.station_yaw)
 

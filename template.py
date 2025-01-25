@@ -24,7 +24,8 @@ roi_regions = {
     "bed_icon": {"start_x":800, "start_y":200 ,"width":1690 ,"height":1100},
     "teleporter_icon": {"start_x":800, "start_y":200 ,"width":1690 ,"height":1100},
     "teleporter_icon_pressed": {"start_x":800, "start_y":200 ,"width":1690 ,"height":1100},
-    "first_slot" :{"start_x": 220, "start_y": 305, "width": 130, "height": 130}
+    "first_slot" :{"start_x": 220, "start_y": 305, "width": 130, "height": 130},
+    "tek_pod_xp": {"start_x":2240, "start_y":1314 ,"width":150 ,"height":100}
 }
 
 def template_sleep(template:str,threshold:float,sleep_amount:float) -> bool:
