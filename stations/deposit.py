@@ -106,7 +106,7 @@ def drop_useless():
             time.sleep(3) # guessing timer hit
             windows.click(variables.close_inv_x,variables.close_inv_y)
     time.sleep(0.5)
-    utils.turn_down(80)
+    utils.turn_down(90)
     time.sleep(0.5)
     ark.open_structure()
     if template.template_sleep("inventory",0.7,2):
@@ -174,6 +174,7 @@ def vaults():
         vault_deposit(side,items)
 
 def deposit_all():
+    time.sleep(0.5)
     utils.zero()
     utils.set_yaw(settings.station_yaw)
     discordbot.logger("opening crystals")
