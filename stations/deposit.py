@@ -174,6 +174,8 @@ def vaults():
         vault_deposit(side,items)
 
 def deposit_all():
+    utils.zero()
+    utils.set_yaw(settings.station_yaw)
     discordbot.logger("opening crystals")
     open_crystals()
     discordbot.logger("depositing in ele dedi")

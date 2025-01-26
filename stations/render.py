@@ -19,6 +19,7 @@ def enter_tekpod():
     time.sleep(1)
     utils.zero()
     utils.set_yaw(settings.station_yaw)
+    utils.turn_down(10) #more efficent at opening tekpod
     time.sleep(1)
     pyautogui.keyDown(local_player.get_input_settings("Use"))
     if template.template_sleep_no_bounds("bed_radical",0.60,2) == False:
@@ -47,7 +48,7 @@ def leave_tekpod():
     pyautogui.press(local_player.get_input_settings("Use"))
     if template.window_still_open_no_bounds("tek_pod_xp",0.7,10): # long time for big timers 
         pyautogui.press(local_player.get_input_settings("Use"))
-    time.sleep(0.4)
+    time.sleep(1)
     utils.current_yaw = settings.render_pushout
     utils.set_yaw(settings.station_yaw)
     time.sleep(0.5)

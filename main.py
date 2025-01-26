@@ -163,21 +163,6 @@ async def start(interaction: discord.Interaction):
     time.sleep(5)
     running_tasks.append(asyncio.create_task(botoptions.task_manager_start()))
 
-@bot.tree.command()
-async def end(interaction: discord.Interaction):
-    global running_tasks
-
-    for task in running_tasks:
-        task.cancel()
-        try:
-            await task
-        except asyncio.CancelledError:
-            pass
-
-    running_tasks.clear() 
-
-    await interaction.response.send_message("bot tasks have been stopped.")
-
 @bot.event
 async def on_ready():
     await bot.tree.sync()
