@@ -45,6 +45,16 @@ def enter_tekpod():
         utils.current_pitch = 0
         retry = 0
         render_flag = True
+        time.sleep(0.5)
+        utils.press_key("ShowMyInventory")
+
+        if template.template_sleep("inventory",0.7,2):
+            ark.drop_all()
+            time.sleep(0.4)
+            windows.click(variables.close_inv_x,variables.close_inv_y)
+        if template.window_still_open("inventory",0.7,2):
+            time.sleep(3) # guessing timer hit
+            windows.click(variables.close_inv_x,variables.close_inv_y)
 
 def leave_tekpod():
     time.sleep(0.4)
