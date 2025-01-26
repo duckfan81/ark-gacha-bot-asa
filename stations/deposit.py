@@ -106,7 +106,7 @@ def drop_useless():
             time.sleep(3) # guessing timer hit
             windows.click(variables.close_inv_x,variables.close_inv_y)
     time.sleep(0.5)
-    utils.turn_down(90)
+    utils.turn_down(85)
     time.sleep(0.5)
     ark.open_structure()
     if template.template_sleep("inventory",0.7,2):

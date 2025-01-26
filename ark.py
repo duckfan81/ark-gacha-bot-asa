@@ -262,12 +262,12 @@ def bed_spawn_in(bed_name:str):
 def teleport_not_default(teleporter_name:str):
     
     time.sleep(0.5)
-    utils.turn_down(90)    # include the looking down part into the teleport as it is common for everytime
+    utils.turn_down(85)    # include the looking down part into the teleport as it is common for everytime
     time.sleep(0.3)
     utils.press_key("Use")
 
     if template.template_sleep("teleporter_title",0.7,2) == False:
-        utils.turn_down(90)
+        utils.turn_down(85)
         time.sleep(0.2)
         utils.press_key("Use")
         template.template_sleep("teleporter_title",0.7,2)
@@ -306,8 +306,8 @@ def teleport_not_default(teleporter_name:str):
     time.sleep(0.4)
     if settings.singleplayer: # correcting for singleplayers wierd tp mechanics
         utils.current_pitch = 0
-        utils.turn_down(90)
-    utils.turn_up(90)
+        utils.turn_down(85)
+    utils.turn_up(85)
     #utils.pitch_zero() # correcting pitch back to 0 from looking down at the tp
     time.sleep(0.4)
 
