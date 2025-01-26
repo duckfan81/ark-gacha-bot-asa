@@ -24,33 +24,33 @@ def dedi_deposit(height):
     if height == 3:
         utils.turn_up(15)
         utils.turn_left(10)
-        time.sleep(0.2)
+        time.sleep(0.3)
         utils.press_key("Use")
-        time.sleep(0.2)
+        time.sleep(0.3)
         utils.turn_right(40)
-        time.sleep(0.2)
+        time.sleep(0.3)
         utils.press_key("Use")
-        time.sleep(0.2)
+        time.sleep(0.3)
         utils.turn_left(30)
         utils.turn_down(15)
 
     utils.turn_left(10)
     utils.press_key("Crouch")
-    time.sleep(0.2)
+    time.sleep(0.3)
     utils.press_key("Use")
-    time.sleep(0.2)
+    time.sleep(0.3)
     utils.turn_right(40)
-    time.sleep(0.2)
+    time.sleep(0.3)
     utils.press_key("Use")
-    time.sleep(0.2)
+    time.sleep(0.3)
     utils.turn_down(30)
-    time.sleep(0.2)
+    time.sleep(0.3)
     utils.press_key("Use")
-    time.sleep(0.2)
+    time.sleep(0.3)
     utils.turn_left(40)
-    time.sleep(0.2)
+    time.sleep(0.3)
     utils.press_key("Use")
-    time.sleep(0.2)
+    time.sleep(0.3)
     utils.press_key("Jump")
     utils.turn_up(30)
     utils.turn_right(10)
@@ -135,6 +135,7 @@ def depo_grinder():
     utils.turn_right(180)
     time.sleep(0.5)
     ark.open_structure()
+    time.sleep(0.2)
     if template.template_sleep("grinder",0.7,1) == False:
         windows.click(variables.close_inv_x,variables.close_inv_y)
         if template.window_still_open("inventory",0.7,2):
@@ -160,14 +161,15 @@ def depo_grinder():
         if template.window_still_open("inventory",0.7,2):
             time.sleep(3) # guessing timer hit
             windows.click(variables.close_inv_x,variables.close_inv_y)
-    time.sleep(0.5)
+    time.sleep(0.8)
     utils.turn_right(180)
 
 def collect_grindables():
-    time.sleep(0.5)
+    time.sleep(0.4)
     utils.turn_right(90)
-    time.sleep(0.75)
+    time.sleep(0.8)
     ark.open_structure()
+    time.sleep(0.4)
     if template.template_sleep("grinder",0.7,1) == False:
         windows.click(variables.close_inv_x,variables.close_inv_y)
         if template.window_still_open("inventory",0.7,2):
@@ -178,6 +180,7 @@ def collect_grindables():
         utils.turn_right(90)
         time.sleep(0.5)
         ark.open_structure()
+        time.sleep(0.4)
     if template.template_sleep("inventory",0.7,2) == False:
         time.sleep(2)
         ark.open_structure()
@@ -189,9 +192,9 @@ def collect_grindables():
         if template.window_still_open("inventory",0.7,2):
             time.sleep(3) # guessing timer hit
             windows.click(variables.close_inv_x,variables.close_inv_y)
-    time.sleep(0.5)
+    time.sleep(0.8)
     utils.turn_left(90)
-    time.sleep(0.8) # stopping hitting E on the fabricator
+    time.sleep(0.5) # stopping hitting E on the fabricator
     dedi_deposit(settings.height_grind)
     time.sleep(0.2)
     drop_useless()
