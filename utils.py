@@ -106,7 +106,9 @@ def zero():
     global current_pitch
     global current_yaw
     ccc_data = ark.console_ccc()
-
+    current_yaw = 0
+    current_pitch = 0
+    
     if float(ccc_data[3]) > 0:
         turn_left(float(ccc_data[3]))
     else:

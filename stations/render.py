@@ -26,6 +26,7 @@ def enter_tekpod():
         time.sleep(1)
         utils.zero()
         utils.set_yaw(settings.station_yaw)
+        utils.turn_down(10)
         time.sleep(1)
         pyautogui.keyDown(local_player.get_input_settings("Use"))
     time.sleep(1)
@@ -41,6 +42,7 @@ def enter_tekpod():
         enter_tekpod()
     if template.check_template_no_bounds("tek_pod_xp",0.7):
         discordbot.logger("NOW RENDERING STATION")
+        utils.current_pitch = 0
         retry = 0
         render_flag = True
 
