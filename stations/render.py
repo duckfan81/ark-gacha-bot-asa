@@ -28,6 +28,7 @@ def enter_tekpod():
         utils.set_yaw(settings.station_yaw)
         time.sleep(1)
         pyautogui.keyDown(local_player.get_input_settings("Use"))
+    time.sleep(1)
     if template.check_template_no_bounds("bed_radical",0.6):
         windows.move_mouse(variables.radical_laydown_x,variables.radical_laydown_y)
         time.sleep(0.5)
