@@ -13,6 +13,8 @@ roi_regions = {
     "crystal_in_hotbar": {"start_x":750, "start_y":1250 ,"width":1060 ,"height":250},
     "death_regions": {"start_x":100, "start_y":100 ,"width":700 ,"height":200},
     "dedi": {"start_x":1100, "start_y":245 ,"width":355 ,"height":70},
+    "vault": {"start_x":1100, "start_y":245 ,"width":355 ,"height":150},
+    "grinder": {"start_x":1100, "start_y":245 ,"width":355 ,"height":70},
     "exit_resume": {"start_x":550, "start_y":450 ,"width":1670 ,"height":880},
     "inventory": {"start_x":200, "start_y":125 ,"width":360 ,"height":150},
     "ready_clicked_bed": {"start_x":580, "start_y":250 ,"width":150 ,"height":1000},
