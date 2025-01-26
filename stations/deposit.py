@@ -60,6 +60,8 @@ def vault_deposit(side,items):
         utils.turn_left(90)
     else:
         utils.turn_right(90)
+    time.sleep(0.5)
+    ark.open_structure()
     if template.template_sleep("vault",0.7,1) == False:
         windows.click(variables.close_inv_x,variables.close_inv_y)
         if template.window_still_open("inventory",0.7,2):
@@ -71,8 +73,8 @@ def vault_deposit(side,items):
             utils.turn_left(90)
         else:
             utils.turn_right(90)
-    time.sleep(0.5)
-    ark.open_structure()
+        time.sleep(0.5)
+        ark.open_structure()
     if template.template_sleep("inventory",0.7,2):
         for x in range(len(items)):
             ark.search_in_inventory(items[x])
