@@ -30,7 +30,12 @@ def iguanadon():
     utils.set_yaw(settings.station_yaw)
     time.sleep(0.2)
     ark.open_structure()
-    template.template_sleep("inventory",0.7,2)
+    if template.check_template("inventory",0.7) == False:
+        utils.zero()
+        utils.set_yaw(settings.station_yaw)
+        time.sleep(0.2)
+        ark.open_structure()
+        time.sleep(0.2)
     time.sleep(0.3)
     ark.transfer_all_from() # transfering all berries currently inside
     time.sleep(0.3)
