@@ -106,7 +106,7 @@ def drop_useless():
             time.sleep(3) # guessing timer hit
             windows.click(variables.close_inv_x,variables.close_inv_y)
     time.sleep(0.5)
-    utils.turn_down(85)
+    utils.turn_down(80)
     time.sleep(0.5)
     ark.open_structure()
     if template.template_sleep("inventory",0.7,2):
@@ -123,6 +123,17 @@ def depo_grinder():
     utils.turn_right(180)
     time.sleep(0.5)
     ark.open_structure()
+    if template.template_sleep("dedi",0.7,1):
+        windows.click(variables.close_inv_x,variables.close_inv_y)
+        if template.window_still_open("inventory",0.7,2):
+            time.sleep(3) # guessing timer hit
+            windows.click(variables.close_inv_x,variables.close_inv_y)
+        utils.zero()
+        utils.set_yaw(settings.station_yaw)
+        utils.turn_right(180)
+        time.sleep(0.5)
+        ark.open_structure()
+
     if template.template_sleep("inventory",0.7,2) == False:
         time.sleep(2)
         ark.open_structure()
@@ -145,6 +156,16 @@ def collect_grindables():
     utils.turn_right(90)
     time.sleep(0.75)
     ark.open_structure()
+    if template.template_sleep("dedi",0.7,1):
+        windows.click(variables.close_inv_x,variables.close_inv_y)
+        if template.window_still_open("inventory",0.7,2):
+            time.sleep(3) # guessing timer hit
+            windows.click(variables.close_inv_x,variables.close_inv_y)
+        utils.zero()
+        utils.set_yaw(settings.station_yaw)
+        utils.turn_right(90)
+        time.sleep(0.5)
+        ark.open_structure()
     if template.template_sleep("inventory",0.7,2) == False:
         time.sleep(2)
         ark.open_structure()

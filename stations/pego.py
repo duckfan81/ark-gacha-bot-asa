@@ -4,13 +4,16 @@ import template
 import windows
 import ark
 import variables
+import settings
 
 def pego_pickup():
     utils.turn_up(15)
     time.sleep(0.5)
     ark.open_structure()
     if template.template_sleep("inventory",0.7,2) == False:
-        utils.turn_up(5)
+        utils.zero()
+        utils.set_yaw(settings.station_yaw)
+        utils.turn_up(15)
         ark.open_structure()
     if template.check_template("inventory",0.7):
         ark.transfer_all_from()

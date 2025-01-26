@@ -71,7 +71,7 @@ def set_yaw(yaw):
         turn_left(-diff)
     else:
         turn_right(diff)
-    current_yaw = yaw
+    current_yaw = normalize_yaw(current_yaw - (-yaw))
 
 def set_pitch(pitch):
     global current_pitch
