@@ -78,6 +78,7 @@ def gacha_dropoff(direction):
     #take all 
     if template.check_template("inventory",0.7) == False: # assuming that the bot didnt turn properly
         utils.zero()
+        utils.set_yaw(settings.station_yaw)
         if direction == "right":
             utils.turn_right(40) 
         else:

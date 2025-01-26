@@ -267,6 +267,9 @@ def teleport_not_default(teleporter_name:str):
     utils.press_key("Use")
 
     if template.template_sleep("teleporter_title",0.7,2) == False:
+        check_state()
+        utils.zero()
+        utils.set_yaw(settings.station_yaw)
         utils.turn_down(80)
         time.sleep(0.2)
         utils.press_key("Use")
