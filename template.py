@@ -27,7 +27,7 @@ roi_regions = {
     "teleporter_icon": {"start_x":800, "start_y":200 ,"width":1690 ,"height":1100},
     "teleporter_icon_pressed": {"start_x":800, "start_y":200 ,"width":1690 ,"height":1100},
     "first_slot" :{"start_x": 220, "start_y": 305, "width": 130, "height": 130},
-    "tek_pod_xp": {"start_x":2240, "start_y":1314 ,"width":150 ,"height":100}
+    "tek_pod_xp": {"start_x":2000, "start_y":1314 ,"width":400 ,"height":100}
 }
 
 def template_sleep(template:str,threshold:float,sleep_amount:float) -> bool:
@@ -123,9 +123,9 @@ def check_template_no_bounds(item:str, threshold:float) -> bool:
     min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
 
     if max_val > threshold:
-        #discordbot.logger(f"{item} found:{max_val}")
+        discordbot.logger(f"{item} found:{max_val}")
         return True
-    #discordbot.logger(f"{item} not found:{max_val} threshold:{threshold}")
+    discordbot.logger(f"{item} not found:{max_val} threshold:{threshold}")
     return False
 
 def teleport_icon(threshold:float) -> bool:
