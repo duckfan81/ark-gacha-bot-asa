@@ -72,7 +72,7 @@ class task_scheduler:
                 if i >= 5: # preventing the limit on discord message length
                     discordbot.queue_write(f"...and {len(self.waiting_queue.queue) - 6} more tasks.", "wait")
                     break
-                discordbot.queue_write(f"Task {i+1} Name: {task.name} Priority: {priority} Next Execution Time: {datetime.datetime.fromtimestamp(exec_time).strftime('%H:%M:%S')}","wait")
+                discordbot.queue_write(f"Task {i+1} Name: {task.name} Priority: {priority} Next Execution Time: <t:{int(exec_time)}:R>","wait")
 
     def print_active_queue(self):
         if self.active_queue.is_empty():
