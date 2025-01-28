@@ -61,7 +61,7 @@ class task_scheduler:
         task.has_run_before = True
     
         self.waiting_queue.add(task, task.get_priority_level(), next_execution_time)
-        discordbot.logger(f"Added task {task.name} to waiting queue ") # might need to remove this if you have LOADS OF stations causing long messages
+        print(f"Added task {task.name} to waiting queue ") # might need to remove this if you have LOADS OF stations causing long messages
 
     def print_waiting_queue(self):
         if self.waiting_queue.is_empty():

@@ -11,6 +11,16 @@ import ark
 global render_flag
 render_flag = False #starts as false as obviously we are not rendering anything
 
+def open_inv_dropall():
+    utils.press_key("ShowMyInventory")
+    if template.template_sleep("inventory", 0.7, 2):
+        ark.drop_all()
+        time.sleep(0.4)
+        windows.click(variables.close_inv_x, variables.close_inv_y)
+    if template.window_still_open("inventory", 0.7, 2):
+        time.sleep(3)  # Guessing timer hit
+        windows.click(variables.close_inv_x, variables.close_inv_y)
+
 def enter_tekpod():
     global render_flag
     retry = 0  
@@ -42,15 +52,7 @@ def enter_tekpod():
             utils.current_pitch = 0
             render_flag = True
             time.sleep(0.5)
-            utils.press_key("ShowMyInventory")
 
-            if template.template_sleep("inventory", 0.7, 2):
-                ark.drop_all()
-                time.sleep(0.4)
-                windows.click(variables.close_inv_x, variables.close_inv_y)
-            if template.window_still_open("inventory", 0.7, 2):
-                time.sleep(3)  # Guessing timer hit
-                windows.click(variables.close_inv_x, variables.close_inv_y)
             return  
         else:
             discordbot.logger(f"failed to get into the tekpod. attempt {retry + 1}/3. retrying in 10 seconds")

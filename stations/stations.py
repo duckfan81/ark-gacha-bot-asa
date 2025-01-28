@@ -103,7 +103,7 @@ class render_station(base_task):
             ark.check_state()
             ark.teleport_not_default(settings.bed_spawn)
             render.enter_tekpod()
-        
+            render.open_inv_dropall()
     def get_priority_level(self):
         return 8
 

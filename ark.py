@@ -96,11 +96,22 @@ def check_state():
         time.sleep(0.5)
         utils.yaw_zero()
         utils.set_yaw(settings.station_yaw)
+        return
 
     if template.check_template_no_bounds("tek_pod_xp",0.7) and render.render_flag == True:
         render.leave_tekpod()
+        return
 
-    # if starving..... 
+    # if starving.....
+    if template.out_off():
+        discordbot.logger("we are out of food or water so we are tping back to render for 30 seconds to replenish")
+        time.sleep(1)
+        teleport_not_default(settings.bed_spawn)
+        render.enter_tekpod()
+        time.sleep(30) #idk easy way to ensure that the food goes to the top
+        render.leave_tekpod()
+        time.sleep(1)
+
 
 def popcorn_inventory(item):
     open = False

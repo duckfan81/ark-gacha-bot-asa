@@ -46,7 +46,7 @@ max_fov = 1.25
 def turn(x: int, y: int):
     
     dx = int(round(x * PIXELS_PER_DEGREE * (max_lr_sens / local_player.get_look_lr_sens()) * (max_fov / local_player.get_fov())))
-    dy = int(round(y * PIXELS_PER_DEGREE * (max_lr_sens / local_player.get_look_lr_sens()) * (max_fov / local_player.get_fov())))
+    dy = int(round(y * PIXELS_PER_DEGREE * (max_ud_sens / local_player.get_look_ud_sens()) * (max_fov / local_player.get_fov())))
 
     input_event = INPUT(type=INPUT_MOUSE)
     input_event.mi = MOUSEINPUT(

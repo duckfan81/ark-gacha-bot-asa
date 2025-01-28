@@ -27,7 +27,8 @@ roi_regions = {
     "teleporter_icon": {"start_x":800, "start_y":200 ,"width":1690 ,"height":1100},
     "teleporter_icon_pressed": {"start_x":800, "start_y":200 ,"width":1690 ,"height":1100},
     "first_slot" :{"start_x": 220, "start_y": 305, "width": 130, "height": 130},
-    "tek_pod_xp": {"start_x":2000, "start_y":1314 ,"width":400 ,"height":100}
+    "tek_pod_xp": {"start_x":2000, "start_y":1314 ,"width":400 ,"height":100},
+    "player_stats": {"start_x":2460,"start_y":1055, "width":99, "height":170}
 }
 
 def template_sleep(template:str,threshold:float,sleep_amount:float) -> bool:
@@ -189,7 +190,40 @@ def inventory_first_slot(item:str,threshold:float) -> bool:
     #discordbot.logger(f"{item} not found:{max_val} threshold:{threshold}")
     return False
 
+def red_knockout():
+    region = roi_regions["player_stats"]
+    if settings.screen_resolution == 1440:
+        roi = screen.get_screen_roi(region["start_x"], region["start_y"], region["width"], region["height"])
+    else:
+        roi = screen.get_screen_roi(int(region["start_x"] * 0.75), int(region["start_y"] * 0.75), int(region["width"] * 0.75), int(region["height"] * 0.75))
+    hsv_image = cv2.cvtColor(roi, cv2.COLOR_BGR2HSV)
 
+    lower_red1 = np.array([0, 50, 50])      
+    upper_red1 = np.array([5, 255, 255])   
+    lower_red2 = np.array([170, 50, 50])    
+    upper_red2 = np.array([180, 255, 255])  
+
+    mask1 = cv2.inRange(hsv_image, lower_red1, upper_red1)
+    mask2 = cv2.inRange(hsv_image, lower_red2, upper_red2)
+
+    red_mask = cv2.bitwise_or(mask1, mask2)
+    red_pixel_count = cv2.countNonZero(red_mask)
+    #discordbot.logger(f"amount of red pixels: {red_pixel_count}")
+    if red_pixel_count > 1000:
+        return True
+    else:
+        return False
+
+def out_off():
+    count = 0
+    while not red_knockout():
+        if count > 1.5 * 10: # checking for 1.5 seconds
+            break
+        count += 1
+        time.sleep(0.1)
+    else:
+        return True
+    return False
 if __name__ == "__main__":
     pass
     
