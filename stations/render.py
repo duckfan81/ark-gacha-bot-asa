@@ -47,7 +47,7 @@ def enter_tekpod():
             time.sleep(0.5)
             pyautogui.keyUp(local_player.get_input_settings("Use"))
         time.sleep(1)
-        if template.template_sleep_no_bounds("tek_pod_xp", 0.7, 4):
+        if ark.buffs() == 2:
             discordbot.logger("NOW RENDERING STATION")
             utils.current_pitch = 0
             render_flag = True
@@ -66,7 +66,8 @@ def enter_tekpod():
 def leave_tekpod():
     time.sleep(0.4)
     pyautogui.press(local_player.get_input_settings("Use"))
-    if template.window_still_open_no_bounds("tek_pod_xp",0.7,10): # long time for big timers 
+    time.sleep(1)
+    if ark.buffs() == 2: # long time for big timers 
         pyautogui.press(local_player.get_input_settings("Use"))
     time.sleep(1)
     utils.current_yaw = settings.render_pushout

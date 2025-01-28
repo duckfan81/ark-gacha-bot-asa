@@ -28,7 +28,9 @@
                     "inv_slot_start_x": 230,
                     "inv_slot_start_y": 315,
                     "inv_slot_end_x":350,
-                    "inv_slot_end_y":435
+                    "inv_slot_end_y":435,
+                    "buff_button_x":1280,
+                    "buff_button_y":1180
 
                 }
             ]
@@ -61,8 +63,9 @@
                     "inv_slot_start_x": 172,
                     "inv_slot_start_y": 236,
                     "inv_slot_end_x":262,
-                    "inv_slot_end_y":326
-                    
+                    "inv_slot_end_y":326,
+                    "buff_button_x":960,
+                    "buff_button_y":885
                 }
             ]
         }

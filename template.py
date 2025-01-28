@@ -27,8 +27,8 @@ roi_regions = {
     "teleporter_icon": {"start_x":800, "start_y":200 ,"width":1690 ,"height":1100},
     "teleporter_icon_pressed": {"start_x":800, "start_y":200 ,"width":1690 ,"height":1100},
     "first_slot" :{"start_x": 220, "start_y": 305, "width": 130, "height": 130},
-    "tek_pod_xp": {"start_x":2000, "start_y":1314 ,"width":400 ,"height":100},
-    "player_stats": {"start_x":2460,"start_y":1055, "width":99, "height":170}
+    "player_stats": {"start_x":1120, "start_y":240 ,"width":300 ,"height":900},
+    "show_buff":{"start_x":1200, "start_y":1150 ,"width":200 ,"height":50}
 }
 
 def template_sleep(template:str,threshold:float,sleep_amount:float) -> bool:
@@ -124,9 +124,9 @@ def check_template_no_bounds(item:str, threshold:float) -> bool:
     min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
 
     if max_val > threshold:
-        discordbot.logger(f"{item} found:{max_val}")
+        #discordbot.logger(f"{item} found:{max_val}")
         return True
-    discordbot.logger(f"{item} not found:{max_val} threshold:{threshold}")
+    #discordbot.logger(f"{item} not found:{max_val} threshold:{threshold}")
     return False
 
 def teleport_icon(threshold:float) -> bool:
@@ -190,40 +190,36 @@ def inventory_first_slot(item:str,threshold:float) -> bool:
     #discordbot.logger(f"{item} not found:{max_val} threshold:{threshold}")
     return False
 
-def red_knockout():
+def check_buffs(buff,threshold):
     region = roi_regions["player_stats"]
     if settings.screen_resolution == 1440:
         roi = screen.get_screen_roi(region["start_x"], region["start_y"], region["width"], region["height"])
     else:
         roi = screen.get_screen_roi(int(region["start_x"] * 0.75), int(region["start_y"] * 0.75), int(region["width"] * 0.75), int(region["height"] * 0.75))
-    hsv_image = cv2.cvtColor(roi, cv2.COLOR_BGR2HSV)
+    
+    lower_boundary = np.array([0, 0, 180])
+    upper_boundary = np.array([255,255,255])
 
-    lower_red1 = np.array([0, 50, 50])      
-    upper_red1 = np.array([5, 255, 255])   
-    lower_red2 = np.array([170, 50, 50])    
-    upper_red2 = np.array([180, 255, 255])  
+    hsv = cv2.cvtColor(roi,cv2.COLOR_BGR2HSV)
+    mask = cv2.inRange(hsv,lower_boundary,upper_boundary)
+    masked_template = cv2.bitwise_and(roi, roi, mask= mask)
+    gray_roi = cv2.cvtColor(masked_template, cv2.COLOR_BGR2GRAY)
 
-    mask1 = cv2.inRange(hsv_image, lower_red1, upper_red1)
-    mask2 = cv2.inRange(hsv_image, lower_red2, upper_red2)
+    image = cv2.imread(f"icons{settings.screen_resolution}/{buff}.png")
+    hsv = cv2.cvtColor(image,cv2.COLOR_BGR2HSV)
+    mask = cv2.inRange(hsv,lower_boundary,upper_boundary)
+    masked_template = cv2.bitwise_and(image, image, mask=mask)
+    image = cv2.cvtColor(masked_template,cv2.COLOR_BGR2GRAY)
 
-    red_mask = cv2.bitwise_or(mask1, mask2)
-    red_pixel_count = cv2.countNonZero(red_mask)
-    #discordbot.logger(f"amount of red pixels: {red_pixel_count}")
-    if red_pixel_count > 1000:
+    res = cv2.matchTemplate(gray_roi, image, cv2.TM_CCOEFF_NORMED)
+    min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
+
+    if max_val > threshold:
+        #discordbot.logger(f"{buff} found:{max_val}")
         return True
-    else:
-        return False
-
-def out_off():
-    count = 0
-    while not red_knockout():
-        if count > 1.5 * 10: # checking for 1.5 seconds
-            break
-        count += 1
-        time.sleep(0.1)
-    else:
-        return True
+    #discordbot.logger(f"{buff} not found:{max_val} threshold:{threshold}")
     return False
+
 if __name__ == "__main__":
     pass
     

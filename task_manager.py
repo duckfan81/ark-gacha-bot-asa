@@ -70,7 +70,7 @@ class task_scheduler:
             discordbot.queue_write("Current waiting_queue:", "wait")
             for i, (exec_time, _, priority, task) in enumerate(self.waiting_queue.queue):
                 if i >= 5: # preventing the limit on discord message length
-                    discordbot.queue_write(f"...and {len(self.waiting_queue.queue) - 6} more tasks.", "wait")
+                    discordbot.queue_write(f"...and {len(self.waiting_queue.queue) - 5} more tasks.", "wait")
                     break
                 discordbot.queue_write(f"Task {i+1} Name: {task.name} Priority: {priority} Next Execution Time: <t:{int(exec_time)}:R>","wait")
 
@@ -82,7 +82,7 @@ class task_scheduler:
             
             for i, (priority,exec_time,  _,task) in enumerate(self.active_queue.queue):  
                 if i >= 5: # preventing the limit on discord message length
-                    discordbot.queue_write(f"...and {len(self.active_queue.queue) - 6} more tasks.", "wait")
+                    discordbot.queue_write(f"...and {len(self.active_queue.queue) - 5} more tasks.", "active")
                     break
                 discordbot.queue_write(f"Task {i+1} Name: {task.name} Priority: {priority} Currently waiting for execution","active")
             

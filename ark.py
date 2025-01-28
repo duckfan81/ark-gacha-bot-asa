@@ -34,7 +34,25 @@ def ini():
     pyautogui.write(ini, interval=0.005) # issues when insta writing 
     utils.press_key("Enter")
     time.sleep(0.3)
-    pyautogui.scroll(10) # puts char in first person 
+    pyautogui.scroll(10) # puts char in first person
+
+def open_inventory():
+    if not template.check_template("inventory",0.7):
+        utils.press_key("ShowMyInventory")
+    if template.template_sleep("inventory",0.7,2) == False:
+        utils.press_key("AccessInventory")
+        template.template_sleep("inventory",0.7,2)
+
+    discordbot.logger("inventory opening")
+
+def close_inventory():
+    if template.template_sleep("inventory", 0.7, 2):
+        windows.click(variables.close_inv_x, variables.close_inv_y)
+        if template.window_still_open("inventory", 0.7, 2):
+            time.sleep(3)  # Guessing timer hit
+            windows.click(variables.close_inv_x, variables.close_inv_y)
+    time.sleep(0.4)
+    discordbot.logger("inventory is closed")
 
 def open_structure():
     utils.press_key("AccessInventory")
@@ -90,6 +108,25 @@ def transfer_all_inventory():
     windows.click(variables.transfer_all_inventory_x,variables.transfer_all_y)
     time.sleep(0.1)
 
+def buffs():
+    open_inventory()
+    count = 0
+    time.sleep(0.5)
+    while template.check_template("show_buff",0.7) and count < 10:
+        windows.click(variables.buff_button_x,variables.buff_button_y)
+        time.sleep(0.2)
+        count += 1
+    time.sleep(0.4)
+    if template.check_buffs("tek_pod_buff",0.7):
+        close_inventory()
+        return 2 
+    elif template.check_buffs("starving",0.7) or template.check_buffs("dehydration",0.7):
+        close_inventory()
+        return 3
+    else:
+        close_inventory()
+        return False
+    
 def check_state():
     if template.check_template("beds_title",0.7):
         bed_spawn_in(settings.bed_spawn)
@@ -97,13 +134,14 @@ def check_state():
         utils.yaw_zero()
         utils.set_yaw(settings.station_yaw)
         return
-
-    if template.check_template_no_bounds("tek_pod_xp",0.7) and render.render_flag == True:
+    
+    type = buffs() 
+    if type == 2 or render.render_flag:
         render.leave_tekpod()
         return
 
     # if starving.....
-    if template.out_off():
+    if type == 3:
         discordbot.logger("we are out of food or water so we are tping back to render for 30 seconds to replenish")
         time.sleep(1)
         teleport_not_default(settings.bed_spawn)
@@ -111,6 +149,7 @@ def check_state():
         time.sleep(30) #idk easy way to ensure that the food goes to the top
         render.leave_tekpod()
         time.sleep(1)
+        return
 
 
 def popcorn_inventory(item):
