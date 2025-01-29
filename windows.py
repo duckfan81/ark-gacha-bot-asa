@@ -1,6 +1,7 @@
 import ctypes
 import local_player
 import screen
+import time
 from ctypes import wintypes
 
 
@@ -70,14 +71,18 @@ class POINT(ctypes.Structure):
 ctypes.windll.user32.PostMessageW.argtypes = [ctypes.c_void_p, ctypes.c_uint, ctypes.c_uint, ctypes.c_ulong]
 ctypes.windll.user32.PostMessageW.restype = ctypes.c_int
 
-def click(x, y):
-    lparam = (y << 16) | x
-    ctypes.windll.user32.PostMessageW(hwnd, WM_LBUTTONDOWN, 0, lparam)
-    ctypes.windll.user32.PostMessageW(hwnd, WM_LBUTTONUP, 0, lparam)
-
 def move_mouse(x, y):
 
     scaled_x = int(x * 65535 / screen.mon["width"])
     scaled_y = int(y * 65535 / screen.mon["height"])
 
     ctypes.windll.user32.mouse_event(MOUSEEVENTF_MOVE | MOUSEEVENTF_ABSOLUTE, scaled_x, scaled_y, 0, 0)
+
+def click(x, y):
+    move_mouse(x,y)
+    time.sleep(0.2)
+    lparam = (y << 16) | x
+    ctypes.windll.user32.PostMessageW(hwnd, WM_LBUTTONDOWN, 0, lparam)
+    ctypes.windll.user32.PostMessageW(hwnd, WM_LBUTTONUP, 0, lparam)
+
+
