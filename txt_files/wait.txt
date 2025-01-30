@@ -1,1 +1,22 @@
 
+Current waiting_queue:
+Task 1 Name: pego1 Priority: 1 Next Execution Time: <t:1738198676:R>
+Task 2 Name: gacha1 Priority: 2 Next Execution Time: <t:1738202041:R>
+Task 3 Name: gacha2 Priority: 2 Next Execution Time: <t:1738202089:R>
+Task 4 Name: gacha3 Priority: 2 Next Execution Time: <t:1738202142:R>
+Task 5 Name: gacha4 Priority: 2 Next Execution Time: <t:1738202195:R>
+...and 4 more tasks.
+Current waiting_queue:
+Task 1 Name: GACHARENDER Priority: 8 Next Execution Time: <t:1738196109:R>
+Task 2 Name: pego1 Priority: 1 Next Execution Time: <t:1738198676:R>
+Task 3 Name: gacha2 Priority: 2 Next Execution Time: <t:1738202089:R>
+Task 4 Name: gacha3 Priority: 2 Next Execution Time: <t:1738202142:R>
+Task 5 Name: gacha1 Priority: 2 Next Execution Time: <t:1738202041:R>
+...and 5 more tasks.
+Current waiting_queue:
+Task 1 Name: GACHARENDER Priority: 8 Next Execution Time: <t:1738196109:R>
+Task 2 Name: pego1 Priority: 1 Next Execution Time: <t:1738198676:R>
+Task 3 Name: gacha2 Priority: 2 Next Execution Time: <t:1738202089:R>
+Task 4 Name: gacha3 Priority: 2 Next Execution Time: <t:1738202142:R>
+Task 5 Name: gacha1 Priority: 2 Next Execution Time: <t:1738202041:R>
+...and 5 more tasks.
