@@ -1,8 +1,21 @@
 import settings
 import re 
+import os
+
+def get_base_path():
+    base_path = settings.base_path
+    if "ARK Survival Ascended" not in base_path:
+        base_path = os.path.join(base_path, "ARK Survival Ascended")
+    return base_path
+
 
 def get_user_settings(setting_name):
-    with open(f"{settings.base_path}ARK Survival Ascended/ShooterGame/Saved/Config/Windows/GameUserSettings.ini", "r") as file:
+
+    settings_path = os.path.join(get_base_path(), "ShooterGame", "Saved", "Config", "Windows", "GameUserSettings.ini")
+    if not os.path.exists(settings_path):
+        raise FileNotFoundError(f"Settings file not found: {settings_path}")
+
+    with open(settings_path, "r") as file:
         for line in file:
             if setting_name in line:
                 key, value = line.strip().split("=")
@@ -18,9 +31,13 @@ def get_fov():
     return float(get_user_settings("FOVMultiplier"))
 
 def get_input_settings(input_name):
-    action_mappings = {}
 
-    with open(f"{settings.base_path}ARK Survival Ascended/ShooterGame/Saved/Config/Windows/input.ini", "r") as file:
+    input_path = os.path.join(get_base_path(), "ShooterGame", "Saved", "Config", "Windows", "input.ini")
+    
+    if not os.path.exists(input_path):
+        raise FileNotFoundError(f"Input settings file not found: {input_path}")
+
+    with open(input_path, "r") as file:
 
         if input_name == "ConsoleKeys":
             for line in file:

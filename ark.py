@@ -51,7 +51,7 @@ def close_inventory():
     else:
         discordbot.logger("inventory is already closed")
         return
-    if template.template_sleep("inventory", 0.7, 2):
+    if template.window_still_open("inventory", 0.7, 2):
         windows.click(variables.get_pixel_loc("close_inv_x"), variables.get_pixel_loc("close_inv_y"))
         if template.window_still_open("inventory", 0.7, 2):
             time.sleep(3)  # Guessing timer hit
