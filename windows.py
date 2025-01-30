@@ -80,7 +80,7 @@ def move_mouse(x, y):
 
 def click(x, y):
     move_mouse(x,y)
-    time.sleep(0.1)
+    time.sleep(0.2)
     lparam = (y << 16) | x
     ctypes.windll.user32.PostMessageW(hwnd, WM_LBUTTONDOWN, 0, lparam)
     ctypes.windll.user32.PostMessageW(hwnd, WM_LBUTTONUP, 0, lparam)

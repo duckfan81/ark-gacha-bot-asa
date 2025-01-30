@@ -16,17 +16,15 @@ def open_inv_dropall():
     if template.template_sleep("inventory", 0.7, 2):
         ark.drop_all()
         time.sleep(0.4)
-        ark.close_inventory()
+        windows.click(variables.close_inv_x, variables.close_inv_y)
+    if template.window_still_open("inventory", 0.7, 2):
+        time.sleep(3)  # Guessing timer hit
+        windows.click(variables.close_inv_x, variables.close_inv_y)
 
 def enter_tekpod():
     global render_flag
     retry = 0  
-    while retry < 3: 
-        if retry == 3:
-            discordbot.logger("killing ourselfs and respawning")
-            ark.implant_eat()
-            ark.check_state()
-
+    while retry < 3:  
         time.sleep(1)
         utils.zero()
         utils.set_yaw(settings.station_yaw)
@@ -45,7 +43,7 @@ def enter_tekpod():
             pyautogui.keyDown(local_player.get_input_settings("Use"))
         time.sleep(1)
         if template.check_template_no_bounds("bed_radical", 0.6):
-            windows.move_mouse(variables.get_pixel_loc("radical_laydown_x"), variables.get_pixel_loc("radical_laydown_y"))
+            windows.move_mouse(variables.radical_laydown_x, variables.radical_laydown_y)
             time.sleep(0.5)
             pyautogui.keyUp(local_player.get_input_settings("Use"))
         time.sleep(1)

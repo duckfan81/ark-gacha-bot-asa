@@ -1,40 +1,49 @@
 import json
 import settings
+screen_resolution = settings.screen_resolution # depending on your screen make it 1080 or 1440
 
-data = {
-    "transfer_all_from_x": 1935,
-    "transfer_all_y": 270,
-    "transfer_all_inventory_x": 550,
-    "drop_all_x": 610,
-    "search_inventory_x": 320,
-    "search_object_x": 1680,
-    "dedi_withdraw_x": 1290,
-    "dedi_withdraw_y": 1118,
-    "search_bar_bed_y": 1300,
-    "search_bar_bed_dead_x": 300,
-    "search_bar_bed_alive_x": 500,
-    "spawn_button_x": 2200,
-    "spawn_button_y": 1300,
-    "implant_eat_x": 295,
-    "implant_eat_y": 380,
-    "radical_laydown_x": 1550,
-    "radical_laydown_y": 620,
-    "first_bed_slot_x": 450,
-    "first_bed_slot_y": 300,
-    "close_inv_x": 2400,
-    "close_inv_y": 90,
-    "inv_slot_start_x": 230,
-    "inv_slot_start_y": 315,
-    "inv_slot_end_x": 350,
-    "inv_slot_end_y": 435,
-    "buff_button_x": 1280,
-    "buff_button_y": 1180
-}
 
-def get_pixel_loc(location):
-    if settings.screen_resolution == 1080:
-        return round(data.get(location) * 0.75)
-    else:
-        return data.get(location)
- 
+def load_resolution_data(file_path):
+    with open(file_path, 'r') as file:
+        data = json.load(file)
+    return data
 
+def get_resolution_data(data, screen_resolution):
+    for resolution_data in data["resolution"]:
+        if resolution_data["screen"] == screen_resolution:
+            return resolution_data["data"][0]
+    return None
+
+resolution_data = load_resolution_data("json_files/resolution.json")
+
+target_data = get_resolution_data(resolution_data, screen_resolution)
+
+
+
+transfer_all_from_x = target_data["transfer_all_from_x"]
+transfer_all_y = target_data["transfer_all_y"]
+transfer_all_inventory_x = target_data["transfer_all_inventory_x"]
+drop_all_x = target_data["drop_all_x"]
+search_inventory_x = target_data["search_inventory_x"]
+search_object_x = target_data["search_object_x"]
+dedi_withdraw_x = target_data["dedi_withdraw_x"]
+dedi_withdraw_y = target_data["dedi_withdraw_y"]
+search_bar_bed_y = target_data["search_bar_bed_y"]
+search_bar_bed_dead_x = target_data["search_bar_bed_dead_x"]
+search_bar_bed_alive_x = target_data["search_bar_bed_alive_x"] 
+spawn_button_x = target_data["spawn_button_x"]
+spawn_button_y = target_data["spawn_button_y"]
+implant_eat_x = target_data["implant_eat_x"]
+implant_eat_y = target_data["implant_eat_y"]
+radical_laydown_x = target_data["radical_laydown_x"]
+radical_laydown_y = target_data["radical_laydown_y"]
+first_bed_slot_x = target_data["first_bed_slot_x"]
+first_bed_slot_y = target_data["first_bed_slot_y"]
+close_inv_x = target_data["close_inv_x"]
+close_inv_y = target_data["close_inv_y"]
+inv_slot_start_x = target_data["inv_slot_start_x"]
+inv_slot_start_y = target_data["inv_slot_start_y"]
+inv_slot_end_x = target_data["inv_slot_end_x"]
+inv_slot_end_y = target_data["inv_slot_end_y"]
+buff_button_x = target_data["buff_button_x"]
+buff_button_y = target_data["buff_button_y"]
