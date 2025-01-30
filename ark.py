@@ -46,11 +46,17 @@ def open_inventory():
     discordbot.logger("inventory opening")
 
 def close_inventory():
+    if template.check_template("inventory",0.7):
+        windows.click(variables.get_pixel_loc("close_inv_x"), variables.get_pixel_loc("close_inv_y"))
+    else:
+        discordbot.logger("inventory is already closed")
+        return
     if template.template_sleep("inventory", 0.7, 2):
-        windows.click(variables.close_inv_x, variables.close_inv_y)
+        windows.click(variables.get_pixel_loc("close_inv_x"), variables.get_pixel_loc("close_inv_y"))
         if template.window_still_open("inventory", 0.7, 2):
             time.sleep(3)  # Guessing timer hit
-            windows.click(variables.close_inv_x, variables.close_inv_y)
+            windows.click(variables.get_pixel_loc("close_inv_x"), variables.get_pixel_loc("close_inv_y"))
+
     time.sleep(0.4)
     discordbot.logger("inventory is closed")
 
@@ -68,14 +74,14 @@ def dedi_withdraw(amount:int):
     discordbot.logger(f"withdrawing {amount} from the dedi") 
     for x in range(amount):
         time.sleep(0.5)
-        windows.click(variables.dedi_withdraw_x,variables.dedi_withdraw_y)
+        windows.click(variables.get_pixel_loc("dedi_withdraw_x"),variables.get_pixel_loc("dedi_withdraw_y"))
     time.sleep(0.1)
     
 def search_in_object(item:str): 
     discordbot.logger(f"searching in structure/dino for {item}")
     time.sleep(0.2)
-    windows.click(variables.search_object_x,variables.transfer_all_y)
-    windows.click(variables.search_object_x,variables.transfer_all_y) #double click to overright if previous
+    windows.click(variables.get_pixel_loc("search_object_x"),variables.get_pixel_loc("transfer_all_y"))
+    windows.click(variables.get_pixel_loc("search_object_x"),variables.get_pixel_loc("transfer_all_y")) #double click to overright if previous
     time.sleep(0.2)
     utils.write(item)
     time.sleep(0.1)
@@ -83,9 +89,9 @@ def search_in_object(item:str):
 def search_in_inventory(item:str):
     discordbot.logger(f"searching in inventory for {item}")
     time.sleep(0.2)
-    windows.click(variables.search_inventory_x,variables.transfer_all_y) 
+    windows.click(variables.get_pixel_loc("search_inventory_x"),variables.get_pixel_loc("transfer_all_y")) 
     time.sleep(0.2)
-    windows.click(variables.search_inventory_x,variables.transfer_all_y) # double click to overright if previous
+    windows.click(variables.get_pixel_loc("search_inventory_x"),variables.get_pixel_loc("transfer_all_y"))  # double click to overright if previous
     time.sleep(0.2)
     utils.write(item)
     time.sleep(0.1)
@@ -93,19 +99,19 @@ def search_in_inventory(item:str):
 def drop_all():  
     discordbot.logger(f"dropping all items")
     time.sleep(0.2)
-    windows.click(variables.drop_all_x,variables.transfer_all_y) 
+    windows.click(variables.get_pixel_loc("drop_all_x"),variables.get_pixel_loc("transfer_all_y")) 
     time.sleep(0.1)
 
 def transfer_all_from(): 
     discordbot.logger(f"transfering all from object")
     time.sleep(0.2)
-    windows.click(variables.transfer_all_from_x, variables.transfer_all_y)
+    windows.click(variables.get_pixel_loc("transfer_all_from_x"), variables.get_pixel_loc("transfer_all_y"))
     time.sleep(0.1)
 
 def transfer_all_inventory(): 
     discordbot.logger(f"transfering all in inventory")
     time.sleep(0.2)
-    windows.click(variables.transfer_all_inventory_x,variables.transfer_all_y)
+    windows.click(variables.get_pixel_loc("transfer_all_inventory_x"),variables.get_pixel_loc("transfer_all_y"))
     time.sleep(0.1)
 
 def buffs():
@@ -113,7 +119,7 @@ def buffs():
     count = 0
     time.sleep(0.5)
     while template.check_template("show_buff",0.7) and count < 10:
-        windows.click(variables.buff_button_x,variables.buff_button_y)
+        windows.click(variables.get_pixel_loc("buff_button_x"),variables.get_pixel_loc("buff_button_y"))
         time.sleep(0.2)
         count += 1
     time.sleep(0.4)
@@ -153,9 +159,7 @@ def check_state():
 
 
 def popcorn_inventory(item):
-    open = False
     if template.check_template("inventory",0.7) == False:
-        open = True
         utils.press_key("ShowMyInventory")
         template.template_sleep("inventory",0.7,2)
         time.sleep(0.5)
@@ -163,13 +167,11 @@ def popcorn_inventory(item):
     time.sleep(0.5)
 
     while template.inventory_first_slot(item,0.35):
-        pyautogui.click(variables.inv_slot_start_x+30,variables.inv_slot_start_y+30)
+        pyautogui.click(variables.get_pixel_loc("inv_slot_start_x")+30,variables.get_pixel_loc("inv_slot_start_y")+30)
         utils.press_key("DropItem")
         time.sleep(0.2)
 
-    if open == True:
-        windows.click(variables.close_inv_x,variables.close_inv_y)
-
+    close_inventory()
 
 def implant_eat():
     if template.check_template("inventory", 0.7) == False:
@@ -195,7 +197,7 @@ def implant_eat():
     time.sleep(0.2)
     utils.press_key("ShowMyInventory")
     time.sleep(1.5)
-    pyautogui.click(variables.implant_eat_x,variables.implant_eat_y)
+    pyautogui.click(variables.get_pixel_loc("implant_eat_x"),variables.get_pixel_loc("implant_eat_y"))
     time.sleep(10) # acouting for lag on high ping 
     utils.press_key("Use")
     while template.check_template("death_regions") == False:
@@ -213,15 +215,13 @@ def white_flash():
 
 def console_ccc():
     if template.check_template("inventory",0.7):
-        windows.click(variables.close_inv_x,variables.close_inv_y)
-        template.window_still_open("inventory",0.7,2)
-        time.sleep(0.4)
+        close_inventory()
     if template.check_template("teleporter_title",0.7):
-        windows.click(variables.search_bar_bed_alive_x-200,variables.search_bar_bed_y)
+        windows.click(variables.get_pixel_loc("search_bar_bed_alive_x")-200,variables.get_pixel_loc("search_bar_bed_y"))
         template.window_still_open("teleporter_title",0.7,2)
         time.sleep(0.4)
     if template.check_template("beds_title",0.7):
-        windows.click(variables.search_bar_bed_alive_x-200,variables.search_bar_bed_y)
+        windows.click(variables.get_pixel_loc("search_bar_bed_alive_x")-200,variables.get_pixel_loc("search_bar_bed_y")) # this is the back button in the bed screen/tp screen
         template.window_still_open("beds_title",0.7,2)
         time.sleep(0.4)
 
@@ -270,20 +270,20 @@ def bed_spawn_in(bed_name:str):
         implant_eat()
     
     if template.check_template("death_regions",0.7) == True:
-        windows.click(variables.search_bar_bed_dead_x,variables.search_bar_bed_y)
-        windows.click(variables.search_bar_bed_dead_x,variables.search_bar_bed_y) # double click for saftey against pre-writen HAS TO BE COMBINED
+        windows.click(variables.get_pixel_loc("search_bar_bed_dead_x"),variables.get_pixel_loc("search_bar_bed_y"))
+        windows.click(variables.get_pixel_loc("search_bar_bed_dead_x"),variables.get_pixel_loc("search_bar_bed_y")) # double click for saftey against pre-writen HAS TO BE COMBINED
         utils.write(bed_name)
     else:
-        windows.click(variables.search_bar_bed_alive_x,variables.search_bar_bed_y)
-        windows.click(variables.search_bar_bed_alive_x,variables.search_bar_bed_y) # double click for saftey against pre-writen HAS TO BE COMBINED
+        windows.click(variables.get_pixel_loc("search_bar_bed_alive_x"),variables.get_pixel_loc("search_bar_bed_y"))
+        windows.click(variables.get_pixel_loc("search_bar_bed_alive_x"),variables.get_pixel_loc("search_bar_bed_y")) # double click for saftey against pre-writen HAS TO BE COMBINED
         utils.write(bed_name)
 
     time.sleep(0.2)
-    windows.click(variables.first_bed_slot_x,variables.first_bed_slot_y)
+    windows.click(variables.get_pixel_loc("first_bed_slot_x"),variables.get_pixel_loc("first_bed_slot_y"))
     if template.template_sleep("ready_clicked_bed",0.7,1) == False:
         pass # maybe use ocr to see when bed is ready    
 
-    windows.click(variables.spawn_button_x,variables.spawn_button_y)
+    windows.click(variables.get_pixel_loc("spawn_button_x"),variables.get_pixel_loc("spawn_button_y"))
 
     while white_flash() == False: # waiting for white flash to be true
         time.sleep(0.1)
@@ -298,7 +298,7 @@ def bed_spawn_in(bed_name:str):
         count += 1
     
     time.sleep(0.5)
-    windows.click(variables.close_inv_x,variables.close_inv_y) # now ready to do whatever we need to 
+    windows.click(variables.get_pixel_loc("close_inv_x"),variables.get_pixel_loc("close_inv_y")) # now ready to do whatever we need to 
     template.window_still_open("tribelog_check",0.8,2)
 
     global first_run
@@ -329,14 +329,14 @@ def teleport_not_default(teleporter_name:str):
     if template.teleport_icon(0.55) == False: # checking to see if we have the bed bug causing crashes 
         time.sleep(10)
     
-    windows.click(variables.search_bar_bed_alive_x,variables.search_bar_bed_y)
-    windows.click(variables.search_bar_bed_alive_x,variables.search_bar_bed_y)
+    windows.click(variables.get_pixel_loc("search_bar_bed_alive_x"),variables.get_pixel_loc("search_bar_bed_y"))
+    windows.click(variables.get_pixel_loc("search_bar_bed_alive_x"),variables.get_pixel_loc("search_bar_bed_y"))
     utils.write(teleporter_name)
 
     time.sleep(0.2)
-    windows.click(variables.first_bed_slot_x,variables.first_bed_slot_y)
+    windows.click(variables.get_pixel_loc("first_bed_slot_x"),variables.get_pixel_loc("first_bed_slot_y"))
     time.sleep(0.2)
-    windows.click(variables.spawn_button_x,variables.spawn_button_y)
+    windows.click(variables.get_pixel_loc("spawn_button_x"),variables.get_pixel_loc("spawn_button_y"))
     count = 0
     while white_flash() == False and count < 20:
         count += 1
@@ -352,7 +352,7 @@ def teleport_not_default(teleporter_name:str):
 
     if template.check_template_no_bounds("tribelog_check",0.8):
         time.sleep(0.5)
-        windows.click(variables.close_inv_x,variables.close_inv_y) # now ready to do whatever we need to 
+        windows.click(variables.get_pixel_loc("close_inv_x"),variables.get_pixel_loc("close_inv_y")) # now ready to do whatever we need to 
         
     template.window_still_open_no_bounds("tribelog_check",0.8,2)
     
@@ -382,7 +382,7 @@ def teleport_default(teleporter_name): # param teleporter_name incase of unable 
 
     if template.check_template("tribelog_check",0.8):
         time.sleep(1)
-        windows.click(variables.close_inv_x,variables.close_inv_y) # now ready to do whatever we need to 
+        windows.click(variables.get_pixel_loc("close_inv_x"),variables.get_pixel_loc("close_inv_y")) # now ready to do whatever we need to 
         
     template.window_still_open("tribelog_check",0.8,2)
     time.sleep(0.2)
@@ -402,6 +402,10 @@ def teleport_default(teleporter_name): # param teleporter_name incase of unable 
         
 
 if __name__ == "__main__":
+    time.sleep(2)
+    open_inventory()
+    time.sleep(2)
+    close_inventory()
     pass
     
 

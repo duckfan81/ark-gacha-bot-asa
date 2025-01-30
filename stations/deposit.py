@@ -63,10 +63,7 @@ def vault_deposit(side,items):
     time.sleep(0.5)
     ark.open_structure()
     if template.template_sleep("vault",0.7,1) == False:
-        windows.click(variables.close_inv_x,variables.close_inv_y)
-        if template.window_still_open("inventory",0.7,2):
-            time.sleep(3) # guessing timer hit
-            windows.click(variables.close_inv_x,variables.close_inv_y)
+        ark.close_inventory()
         utils.zero()
         utils.set_yaw(settings.station_yaw)
         if side == "left":
@@ -80,10 +77,7 @@ def vault_deposit(side,items):
             ark.search_in_inventory(items[x])
             ark.transfer_all_inventory()
             time.sleep(0.4)
-        windows.click(variables.close_inv_x,variables.close_inv_y)
-        if template.window_still_open("inventory",0.7,2):
-            time.sleep(3) # guessing timer hit
-            windows.click(variables.close_inv_x,variables.close_inv_y)
+        ark.close_inventory()
         time.sleep(0.5)
     if side == "left":
         utils.turn_right(90)
@@ -101,10 +95,7 @@ def drop_useless():
         ark.search_in_inventory(settings.berry_type)
         ark.drop_all()
         time.sleep(0.4)
-        windows.click(variables.close_inv_x,variables.close_inv_y)
-        if template.window_still_open("inventory",0.7,2):
-            time.sleep(3) # guessing timer hit
-            windows.click(variables.close_inv_x,variables.close_inv_y)
+        ark.close_inventory()
     time.sleep(0.5)
     utils.press_key("Jump")
     time.sleep(0.5)
@@ -113,19 +104,14 @@ def drop_useless():
     if template.template_sleep("inventory",0.7,2):
         ark.drop_all()
         time.sleep(0.4)
-        windows.click(variables.close_inv_x,variables.close_inv_y)
-        if template.window_still_open("inventory",0.7,2):
-            time.sleep(3) # guessing timer hit
-            windows.click(variables.close_inv_x,variables.close_inv_y)
+        ark.close_inventory()
     time.sleep(0.5)
     utils.turn_down(80)
     time.sleep(0.5)
     ark.open_structure()
-    if template.template_sleep("inventory",0.7,2):
+    if template.template_sleep("inventory",0.7,1):
         ark.transfer_all_from() # dont need a close as a bag will disapear
-        if template.window_still_open("inventory",0.7,2):
-            time.sleep(3) # guessing timer hit
-            windows.click(variables.close_inv_x,variables.close_inv_y)
+        ark.close_inventory()
     else:
         discordbot.logger("no bag dropped")
     time.sleep(0.8)
@@ -137,10 +123,7 @@ def depo_grinder():
     ark.open_structure()
     time.sleep(0.2)
     if template.template_sleep("grinder",0.7,1) == False:
-        windows.click(variables.close_inv_x,variables.close_inv_y)
-        if template.window_still_open("inventory",0.7,2):
-            time.sleep(3) # guessing timer hit
-            windows.click(variables.close_inv_x,variables.close_inv_y)
+        ark.close_inventory()
         utils.zero()
         utils.set_yaw(settings.station_yaw)
         utils.turn_right(180)
@@ -155,12 +138,9 @@ def depo_grinder():
     if template.check_template("inventory",0.7):
         ark.transfer_all_inventory()
         time.sleep(0.3)
-        windows.click(variables.dedi_withdraw_x,variables.dedi_withdraw_y)
+        windows.click(variables.get_pixel_loc("dedi_withdraw_x"),variables.get_pixel_loc("dedi_withdraw_y"))
         time.sleep(0.3)
-        windows.click(variables.close_inv_x,variables.close_inv_y)
-        if template.window_still_open("inventory",0.7,2):
-            time.sleep(3) # guessing timer hit
-            windows.click(variables.close_inv_x,variables.close_inv_y)
+        ark.close_inventory()
     time.sleep(0.8)
     utils.turn_right(180)
 
@@ -171,10 +151,7 @@ def collect_grindables():
     ark.open_structure()
     time.sleep(0.4)
     if template.template_sleep("grinder",0.7,1) == False:
-        windows.click(variables.close_inv_x,variables.close_inv_y)
-        if template.window_still_open("inventory",0.7,2):
-            time.sleep(3) # guessing timer hit
-            windows.click(variables.close_inv_x,variables.close_inv_y)
+        ark.close_inventory()
         utils.zero()
         utils.set_yaw(settings.station_yaw)
         utils.turn_right(90)
@@ -188,10 +165,7 @@ def collect_grindables():
     if template.check_template("inventory",0.7):
         ark.transfer_all_from()
         time.sleep(0.2)
-        windows.click(variables.close_inv_x,variables.close_inv_y)
-        if template.window_still_open("inventory",0.7,2):
-            time.sleep(3) # guessing timer hit
-            windows.click(variables.close_inv_x,variables.close_inv_y)
+        ark.close_inventory()
     time.sleep(0.8)
     utils.turn_left(90)
     time.sleep(0.5) # stopping hitting E on the fabricator
