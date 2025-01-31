@@ -2,16 +2,26 @@ import settings
 import re 
 import os
 
-def get_base_path():
-    base_path = settings.base_path
-    if "ARK Survival Ascended" not in base_path:
-        base_path = os.path.join(base_path, "ARK Survival Ascended")
-    return base_path
+import psutil
+from pathlib import Path
 
+process_name = "ArkAscended.exe" 
+
+
+def path():
+    print("finding path now ")
+    for proc in psutil.process_iter(attrs=[ 'name', 'exe']):
+        
+        if proc.info['name'] == process_name:
+            exe_path = proc.info['exe']
+            path = Path(exe_path)
+            return path.parents[3]
+
+base_path = path()
 
 def get_user_settings(setting_name):
 
-    settings_path = os.path.join(get_base_path(), "ShooterGame", "Saved", "Config", "Windows", "GameUserSettings.ini")
+    settings_path = os.path.join(base_path, "ShooterGame", "Saved", "Config", "Windows", "GameUserSettings.ini")
     if not os.path.exists(settings_path):
         raise FileNotFoundError(f"Settings file not found: {settings_path}")
 
@@ -32,7 +42,7 @@ def get_fov():
 
 def get_input_settings(input_name):
 
-    input_path = os.path.join(get_base_path(), "ShooterGame", "Saved", "Config", "Windows", "input.ini")
+    input_path = os.path.join(base_path, "ShooterGame", "Saved", "Config", "Windows", "input.ini")
     
     if not os.path.exists(input_path):
         raise FileNotFoundError(f"Input settings file not found: {input_path}")
@@ -56,4 +66,4 @@ def get_input_settings(input_name):
                     return key
                 
     return input_name
-                
+            
