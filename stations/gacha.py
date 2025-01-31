@@ -84,7 +84,7 @@ def gacha_dropoff(direction):
 
     ark.transfer_all_from()
     time.sleep(0.5)
-
+    temp = False
     if template.template_sleep_no_bounds("slot_capped",0.7,0.4):
         ark.search_in_inventory("pell")
         time.sleep(0.1)
