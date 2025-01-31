@@ -36,15 +36,33 @@ def ini():
     time.sleep(0.3)
     pyautogui.scroll(10) # puts char in first person
 
+def open_tribelog():
+    count = 0
+    while template.check_template_no_bounds("tribelog_check",0.8) == False and count < 100: # stopping inf loops 
+        utils.press_key("ShowTribeManager") # tribelog doesnt close if you spam the key 
+        time.sleep(0.1)
+        count += 1
+
+def close_tribelog():
+    if template.check_template_no_bounds("tribelog_check",0.8):
+        time.sleep(0.2)
+        windows.click(variables.get_pixel_loc("close_inv_x"),variables.get_pixel_loc("close_inv_y")) # now ready to do whatever we need to 
+        
+    if template.window_still_open_no_bounds("tribelog_check",0.8,2):
+        time.sleep(3) # guessing its timer
+        windows.click(variables.get_pixel_loc("close_inv_x"),variables.get_pixel_loc("close_inv_y"))
+        time.sleep(2)
+    time.sleep(0.2)
+
 def open_inventory():
     if not template.check_template("inventory",0.7):
         utils.press_key("ShowMyInventory")
     if template.template_sleep("inventory",0.7,2) == False:
+        discordbot.logger("inventory didnt open retrying")
         utils.press_key("AccessInventory")
         template.template_sleep("inventory",0.7,2)
 
     discordbot.logger("inventory opening")
-
 def close_inventory():
     if template.check_template("inventory",0.7):
         windows.click(variables.get_pixel_loc("close_inv_x"), variables.get_pixel_loc("close_inv_y"))
@@ -63,6 +81,7 @@ def close_inventory():
 def open_structure():
     utils.press_key("AccessInventory")
     if template.template_sleep("inventory",0.7,2) == False:
+        discordbot.logger("object didnt open retrying")
         utils.press_key("AccessInventory")
         template.template_sleep("inventory",0.7,2)
     if settings.singleplayer == False: # in single player i havent had the issue of the waiting screen
@@ -317,6 +336,7 @@ def teleport_not_default(teleporter_name:str):
     utils.press_key("Use")
 
     if template.template_sleep("teleporter_title",0.7,2) == False:
+        discordbot.logger("teleporter screen not found")
         check_state()
         utils.zero()
         utils.set_yaw(settings.station_yaw)

@@ -84,16 +84,29 @@ def gacha_dropoff(direction):
 
     ark.transfer_all_from()
     time.sleep(0.5)
-    if template.check_template_no_bounds("slot_capped",0.7):
+
+    if template.template_sleep_no_bounds("slot_capped",0.7,0.4):
         ark.search_in_inventory("pell")
+        time.sleep(0.1)
+        if not template.check_template("snow_owl_pellet",0.5):
+            ark.close_inventory()
+            time.sleep(0.2)
+            utils.turn_right(180)
+            time.sleep(0.2)
+            ark.open_inventory()
+            time.sleep(0.2)
+            ark.search_in_inventory("seed")
+            temp = True
         for x in range(15):
             pyautogui.click(variables.get_pixel_loc("inv_slot_start_x")+50,variables.get_pixel_loc("inv_slot_start_y")+70)
             utils.press_key("DropItem")
             time.sleep(0.1)
-    
+        
     ark.close_inventory()
     time.sleep(0.4)    
-
+    if temp:
+        utils.turn_left(180)
+        time.sleep(0.5)
     if direction == "right":
         utils.turn_right(90)
     else:

@@ -26,7 +26,7 @@ def enter_tekpod():
             discordbot.logger("killing ourselfs and respawning")
             ark.implant_eat()
             ark.check_state()
-
+        utils.press_key("Jump") # incase player is crouched somehow
         time.sleep(1)
         utils.zero()
         utils.set_yaw(settings.station_yaw)
@@ -54,7 +54,6 @@ def enter_tekpod():
             utils.current_pitch = 0
             render_flag = True
             time.sleep(0.5)
-
             return  
         else:
             discordbot.logger(f"failed to get into the tekpod. attempt {retry + 1}/3. retrying in 10 seconds")
@@ -66,6 +65,7 @@ def enter_tekpod():
 
 
 def leave_tekpod():
+    ark.close_tribelog()
     time.sleep(0.4)
     pyautogui.press(local_player.get_input_settings("Use"))
     time.sleep(1)
