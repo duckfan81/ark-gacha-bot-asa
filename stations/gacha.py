@@ -101,9 +101,9 @@ def gacha_dropoff(direction):
             pyautogui.click(variables.get_pixel_loc("inv_slot_start_x")+50,variables.get_pixel_loc("inv_slot_start_y")+70)
             utils.press_key("DropItem")
             time.sleep(0.1)
-        
+        time.sleep(0.2)
     ark.close_inventory()
-    time.sleep(0.4)    
+    time.sleep(0.5)    
     if temp:
         utils.turn_left(180)
         time.sleep(0.5)
