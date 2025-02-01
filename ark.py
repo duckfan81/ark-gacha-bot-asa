@@ -63,6 +63,7 @@ def open_inventory():
         template.template_sleep("inventory",0.7,2)
 
     discordbot.logger("inventory opening")
+
 def close_inventory():
     if template.check_template("inventory",0.7):
         windows.click(variables.get_pixel_loc("close_inv_x"), variables.get_pixel_loc("close_inv_y"))
@@ -158,6 +159,10 @@ def check_state():
         time.sleep(0.5)
         utils.yaw_zero()
         utils.set_yaw(settings.station_yaw)
+        return
+    
+    if template.check_template_no_bounds("tribelog_check",0.7):
+        close_tribelog()
         return
     
     type = buffs() 
