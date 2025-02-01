@@ -88,7 +88,7 @@ def gacha_dropoff(direction):
     if template.template_sleep_no_bounds("slot_capped",0.7,0.4):
         ark.search_in_inventory("pell")
         time.sleep(0.2)
-        if not template.template_sleep("snow_owl_pellet",0.5,1):
+        if not template.template_sleep_no_bounds("snow_owl_pellet",0.5,1):
             ark.close_inventory()
             time.sleep(0.2)
             utils.turn_right(180)

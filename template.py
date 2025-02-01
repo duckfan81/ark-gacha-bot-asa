@@ -29,7 +29,7 @@ roi_regions = {
     "first_slot" :{"start_x": 220, "start_y": 305, "width": 130, "height": 130},
     "player_stats": {"start_x":1120, "start_y":240 ,"width":300 ,"height":900},
     "show_buff":{"start_x":1200, "start_y":1150 ,"width":200 ,"height":50},
-    "snow_owl_pellet":{"start_x":200, "start_y":150 ,"width":400 ,"height":400}
+    "snow_owl_pellet":{"start_x":200, "start_y":150 ,"width":600 ,"height":600}
 }
 
 def template_sleep(template:str,threshold:float,sleep_amount:float) -> bool:
