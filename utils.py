@@ -109,15 +109,10 @@ def zero():
     current_yaw = 0
     current_pitch = 0
     
-    if float(ccc_data[3]) > 0:
-        turn_left(float(ccc_data[3]))
-    else:
-        turn_right(-float(ccc_data[3]))
-    
-    if float(ccc_data[4]) > 0:
-        turn_down(float(ccc_data[4]))
-    else:
-        turn_up(-float(ccc_data[4]))
+    yaw_zero()
+
+    pitch_zero()
+
     current_yaw = 0
     current_pitch = 0
 
