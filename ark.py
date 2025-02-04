@@ -224,7 +224,7 @@ def implant_eat():
     pyautogui.click(variables.get_pixel_loc("implant_eat_x"),variables.get_pixel_loc("implant_eat_y"))
     time.sleep(10) # acouting for lag on high ping 
     utils.press_key("Use")
-    while template.check_template("death_regions") == False:
+    while template.check_template("death_regions",0.7) == False:
         time.sleep(0.2)
     time.sleep(1)
 
@@ -295,11 +295,13 @@ def bed_spawn_in(bed_name:str):
     
     if template.check_template("death_regions",0.7) == True:
         windows.click(variables.get_pixel_loc("search_bar_bed_dead_x"),variables.get_pixel_loc("search_bar_bed_y"))
-        windows.click(variables.get_pixel_loc("search_bar_bed_dead_x"),variables.get_pixel_loc("search_bar_bed_y")) # double click for saftey against pre-writen HAS TO BE COMBINED
+        pyautogui.hotkey("ctrl","a")
+        pyautogui.press("backspace")
         utils.write(bed_name)
     else:
         windows.click(variables.get_pixel_loc("search_bar_bed_alive_x"),variables.get_pixel_loc("search_bar_bed_y"))
-        windows.click(variables.get_pixel_loc("search_bar_bed_alive_x"),variables.get_pixel_loc("search_bar_bed_y")) # double click for saftey against pre-writen HAS TO BE COMBINED
+        pyautogui.hotkey("ctrl","a")
+        pyautogui.press("backspace")
         utils.write(bed_name)
 
     time.sleep(0.2)
@@ -355,7 +357,8 @@ def teleport_not_default(teleporter_name:str):
         time.sleep(10)
     
     windows.click(variables.get_pixel_loc("search_bar_bed_alive_x"),variables.get_pixel_loc("search_bar_bed_y"))
-    windows.click(variables.get_pixel_loc("search_bar_bed_alive_x"),variables.get_pixel_loc("search_bar_bed_y"))
+    pyautogui.hotkey("ctrl","a")
+    pyautogui.press("backspace")
     utils.write(teleporter_name)
 
     time.sleep(0.2)
@@ -428,9 +431,9 @@ def teleport_default(teleporter_name): # param teleporter_name incase of unable 
 
 if __name__ == "__main__":
     time.sleep(2)
-    open_inventory()
-    time.sleep(2)
-    close_inventory()
+    pyautogui.hotkey("ctrl","a")
+    pyautogui.press("backspace")
+    
     pass
     
 

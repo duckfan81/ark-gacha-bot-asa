@@ -22,7 +22,7 @@ def enter_tekpod():
     global render_flag
     retry = 0  
     while retry < 3: 
-        if retry == 3:
+        if retry == 2:
             discordbot.logger("killing ourselfs and respawning")
             ark.implant_eat()
             ark.check_state()

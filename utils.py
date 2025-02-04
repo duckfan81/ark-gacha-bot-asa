@@ -71,7 +71,7 @@ def set_yaw(yaw):
         turn_left(-diff)
     else:
         turn_right(diff)
-    current_yaw = normalize_yaw(current_yaw - (-yaw))
+    current_yaw = normalize_yaw(yaw)
 
 def set_pitch(pitch):
     global current_pitch
@@ -81,7 +81,7 @@ def set_pitch(pitch):
     else:
         turn_down(change)
     current_pitch = pitch
-    
+
 def yaw_zero():
     global current_yaw
     ccc_data = ark.console_ccc()
@@ -90,7 +90,6 @@ def yaw_zero():
         turn_left(float(ccc_data[3]))
     else:
         turn_right(-float(ccc_data[3]))
-    current_yaw = 0
 
 def pitch_zero():
     global current_pitch
@@ -103,12 +102,10 @@ def pitch_zero():
     current_pitch = 0
 
 def zero():
-    global current_pitch
     global current_yaw
-    ccc_data = ark.console_ccc()
-    current_yaw = 0
-    current_pitch = 0
-    
+    global current_pitch
+    ccc_data = ark.console_ccc()    
+
     if float(ccc_data[3]) > 0:
         turn_left(float(ccc_data[3]))
     else:
@@ -118,19 +115,19 @@ def zero():
         turn_down(float(ccc_data[4]))
     else:
         turn_up(-float(ccc_data[4]))
-    current_yaw = 0
+
     current_pitch = 0
+    current_yaw = 0
 
 def turn_right(degrees):
     global current_yaw
     windows.turn(degrees, 0)
     current_yaw = normalize_yaw(current_yaw + degrees)
 
-
 def turn_left(degrees):
     global current_yaw
     windows.turn(-degrees, 0)
-    current_yaw = normalize_yaw(current_yaw - (-degrees))
+    current_yaw = normalize_yaw(current_yaw + (-degrees))
     
 
 def turn_down(degrees):
