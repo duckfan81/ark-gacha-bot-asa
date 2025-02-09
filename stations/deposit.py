@@ -51,7 +51,7 @@ def dedi_deposit(height):
     time.sleep(0.3)
     utils.press_key("Use")
     time.sleep(0.3)
-    utils.press_key("Jump")
+    utils.press_key("Run")
     utils.turn_up(30)
     utils.turn_right(10)
 
@@ -97,7 +97,7 @@ def drop_useless():
         time.sleep(0.4)
         ark.close_inventory()
     time.sleep(0.5)
-    utils.press_key("Jump")
+    utils.press_key("Run")
     time.sleep(0.5)
     utils.press_key("ShowMyInventory")
 

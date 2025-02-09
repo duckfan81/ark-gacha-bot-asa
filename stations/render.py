@@ -26,7 +26,7 @@ def enter_tekpod():
             discordbot.logger("killing ourselfs and respawning")
             ark.implant_eat()
             ark.check_state()
-        utils.press_key("Jump") # incase player is crouched somehow
+        utils.press_key("Run") # incase player is crouched somehow
         time.sleep(1)
         utils.zero()
         utils.set_yaw(settings.station_yaw)

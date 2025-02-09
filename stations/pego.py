@@ -13,7 +13,7 @@ def pego_pickup():
     if template.template_sleep("inventory",0.7,2) == False:
         utils.zero()
         utils.set_yaw(settings.station_yaw)
-        utils.press_key("Jump")
+        utils.press_key("Run")
         utils.turn_up(15)
         time.sleep(0.5)
         ark.open_structure()
