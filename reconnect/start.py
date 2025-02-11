@@ -1,0 +1,24 @@
+from reconnect import join_menu
+from reconnect import main_menu
+from reconnect import multiplayer_menu
+from reconnect import recon_utils
+import template
+
+class reconnect():
+
+    def __init__(self,server):
+        self.server = server
+        pass
+
+    def check_disconected(self):
+        return recon_utils.check_template_no_bounds("escape",0.7)
+             
+    def rejoin_server(self):
+        joined = False
+        while not joined:
+            main_menu.enter_menu()
+            join_menu.enter_menu()
+            multiplayer_menu.join_server(self.server)
+            if template.check_template_no_bounds("tribelog_check",0.8):
+                joined = True
+                return 

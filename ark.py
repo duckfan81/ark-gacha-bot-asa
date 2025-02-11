@@ -10,6 +10,8 @@ import win32clipboard
 import windows
 import template
 import stations.render as render
+import reconnect.start
+import reconnect.recon_utils
 
 global bed_number
 global first_run
@@ -153,6 +155,16 @@ def buffs():
         return False
     
 def check_state():
+    rejoin = reconnect.start.reconnect(str(settings.server_number))
+    if rejoin.check_disconected():
+        discordbot.logger("we are disconnected from the server")
+        rejoin.rejoin_server()
+        close_tribelog()
+        discordbot.logger("joined back into the server waiting 30 seconds to render everything ")
+        time.sleep(60)
+        utils.yaw_zero()
+        utils.set_yaw(settings.station_yaw)
+
     if template.check_template("beds_title",0.7):
         bed_spawn_in(settings.bed_spawn)
         time.sleep(0.5)
@@ -427,9 +439,7 @@ def teleport_default(teleporter_name): # param teleporter_name incase of unable 
 
 if __name__ == "__main__":
     time.sleep(2)
-    pyautogui.hotkey("ctrl","a")
-    pyautogui.press("backspace")
-    
+    check_state()
     pass
     
 
