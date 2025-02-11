@@ -21,7 +21,7 @@ def is_open(): # pretty much always true while in this screen
     return recon_utils.check_template_no_bounds("join_last_session",0.7)
 
 def disconnect():
-    return recon_utils.check_template_no_bounds("accept",0.7)
+    return recon_utils.check_template_no_bounds("connection_timeout",0.7)
     
 def join_last():
     if not is_open():

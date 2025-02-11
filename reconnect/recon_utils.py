@@ -19,7 +19,8 @@ location = {
     "join_text":{"start_x":900, "start_y":635 ,"width":400 ,"height":30},
     "loading_screen":{"start_x":0, "start_y":0 ,"width":500 ,"height":500},
     "searching":{"start_x":1160, "start_y":635 ,"width":120 ,"height":40},
-    "no_session":{"start_x":1260, "start_y":635 ,"width":150 ,"height":40}
+    "no_session":{"start_x":1260, "start_y":635 ,"width":150 ,"height":40},
+    "connection_timeout":{"start_x":1025, "start_y":460 ,"width":100 ,"height":55}
 }
 
 
