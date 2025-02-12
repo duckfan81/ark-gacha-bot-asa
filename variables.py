@@ -1,5 +1,4 @@
-import json
-import settings
+import screen
 
 data = {
     "transfer_all_from_x": 1935,
@@ -32,7 +31,7 @@ data = {
 }
 
 def get_pixel_loc(location):
-    if settings.screen_resolution == 1080:
+    if screen.screen_resolution == 1080:
         return round(data.get(location) * 0.75)
     else:
         return data.get(location)

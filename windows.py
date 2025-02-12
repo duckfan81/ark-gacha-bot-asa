@@ -82,5 +82,3 @@ def click(x, y):
     lparam = (y << 16) | x
     ctypes.windll.user32.PostMessageW(hwnd, WM_LBUTTONDOWN, 0, lparam)
     ctypes.windll.user32.PostMessageW(hwnd, WM_LBUTTONUP, 0, lparam)
-
-

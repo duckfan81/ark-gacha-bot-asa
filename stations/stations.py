@@ -9,6 +9,8 @@ from stations import pego
 from stations import deposit
 from abc import ABC ,abstractmethod
 global berry_station
+global last_berry
+last_berry = 0
 berry_station = True
 
 class base_task(ABC):
@@ -39,13 +41,15 @@ class gacha_station(base_task):
         ark.check_state()
         global berry_station
         temp = False
-        
-        if berry_station: 
-            ark.teleport_not_default(settings.berry_station)
+        time_between = time.time() - last_berry
+
+        if (berry_station and (time_between > 30*60)) or time_between > 4*60*60: # if time is greater than 4 hours since the last time you went to berry station 
+            ark.teleport_not_default(settings.berry_station)                    # or if berry station is true( when you go to tekpod and drop all ) and the time between has been longer than 30 mins since youve last been 
             if settings.external_berry: 
                 discordbot.logger("sleeping for 20 seconds as external")
                 time.sleep(20)#letting station spawn in if you have to tp away
             gacha.berry_station()
+            last_berry = time.time()
             berry_station = False
             temp = True
         

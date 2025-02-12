@@ -1,7 +1,7 @@
 from reconnect import recon_utils
 import time 
 import windows
-import settings 
+import screen
 
 
 
@@ -13,7 +13,7 @@ buttons = {
 
 
 def get_pixel_loc( location):
-    if settings.screen_resolution == 1080:
+    if screen.screen_resolution == 1080:
         return round(buttons.get(location) * 0.75)
     return buttons.get(location)
 
