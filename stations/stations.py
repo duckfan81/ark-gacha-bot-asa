@@ -40,6 +40,7 @@ class gacha_station(base_task):
     def execute(self):
         ark.check_state()
         global berry_station
+        global last_berry
         temp = False
         time_between = time.time() - last_berry
 
