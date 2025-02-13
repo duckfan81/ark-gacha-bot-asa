@@ -93,7 +93,7 @@ def drop_useless():
     utils.press_key("ShowMyInventory")
     if template.template_sleep("inventory",0.7,2):
         ark.search_in_inventory(settings.berry_type)
-        ark.drop_all()
+        ark.drop_all_inv()
         time.sleep(0.4)
         ark.close_inventory()
     time.sleep(0.5)
@@ -102,7 +102,7 @@ def drop_useless():
     utils.press_key("ShowMyInventory")
 
     if template.template_sleep("inventory",0.7,2):
-        ark.drop_all()
+        ark.drop_all_inv()
         time.sleep(0.4)
         ark.close_inventory()
     time.sleep(0.5)

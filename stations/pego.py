@@ -18,7 +18,7 @@ def pego_pickup():
         time.sleep(0.5)
         ark.open_structure()
     if template.check_template("inventory",0.7):
-        ark.drop_all()
+        ark.drop_all_inv()
         time.sleep(0.2)
         ark.transfer_all_from()
         time.sleep(0.2)

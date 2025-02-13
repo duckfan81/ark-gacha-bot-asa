@@ -117,10 +117,16 @@ def search_in_inventory(item:str):
     utils.write(item)
     time.sleep(0.1)
 
-def drop_all():  
+def drop_all_inv():  
     discordbot.logger(f"dropping all items")
     time.sleep(0.2)
     windows.click(variables.get_pixel_loc("drop_all_x"),variables.get_pixel_loc("transfer_all_y")) 
+    time.sleep(0.1)
+
+def drop_all_obj():
+    discordbot.logger(f"dropping all items")
+    time.sleep(0.2)
+    windows.click(variables.get_pixel_loc("drop_all_obj_x"),variables.get_pixel_loc("transfer_all_y")) 
     time.sleep(0.1)
 
 def transfer_all_from(): 

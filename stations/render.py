@@ -14,7 +14,7 @@ render_flag = False #starts as false as obviously we are not rendering anything
 def open_inv_dropall():
     utils.press_key("ShowMyInventory")
     if template.template_sleep("inventory", 0.7, 2):
-        ark.drop_all()
+        ark.drop_all_inv()
         time.sleep(0.4)
         ark.close_inventory()
 
