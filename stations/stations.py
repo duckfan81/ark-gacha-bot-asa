@@ -44,7 +44,7 @@ class gacha_station(base_task):
         temp = False
         time_between = time.time() - last_berry
 
-        if (berry_station and (time_between > 30*60)) or time_between > 4*60*60: # if time is greater than 4 hours since the last time you went to berry station 
+        if (berry_station and (time_between > 4*60*60)) or time_between > 4*60*60: # if time is greater than 4 hours since the last time you went to berry station 
             ark.teleport_not_default(settings.berry_station)                    # or if berry station is true( when you go to tekpod and drop all ) and the time between has been longer than 30 mins since youve last been 
             if settings.external_berry: 
                 discordbot.logger("sleeping for 20 seconds as external")
