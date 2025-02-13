@@ -31,7 +31,7 @@ async def embed_create(queue_type):
             priority, exec_time, _, task = entry
             embed.add_field(
                 name=f"Task {i+1}",
-                value=f"Name: {task.name} | Priority: {priority} | Execution: NOW ",
+                value=f"Name: {task.name} | Priority: {priority} | Execution: READY ",
                 inline=False
             )
         else:  
