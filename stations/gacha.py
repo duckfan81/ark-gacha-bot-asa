@@ -97,10 +97,10 @@ def gacha_dropoff(direction):
             time.sleep(0.2)
             ark.search_in_inventory("seed")
             temp = True
-        for x in range(15):
+        for x in range(8):
             pyautogui.click(variables.get_pixel_loc("inv_slot_start_x")+50,variables.get_pixel_loc("inv_slot_start_y")+70)
             utils.press_key("DropItem")
-            time.sleep(0.1)
+            time.sleep(0.2)
         time.sleep(0.2)
     ark.close_inventory()
     time.sleep(0.5)    

@@ -4,6 +4,23 @@ import json
 import stations.stations as stations
 import discordbot
 import datetime
+from threading import Lock, Thread 
+
+global scheduler
+
+class SingletonMeta(type):
+
+    _instances = {}
+
+    _lock: Lock = Lock()
+
+    def __call__(cls,*args,**kwargs):
+
+        with cls._lock:
+            if cls not in cls._instances:
+                instance = super().__call__(*args,**kwargs)
+                cls._instances[cls] = instance
+        return cls._instances[cls]
 
 class priority_queue_exc:
     def __init__(self):
@@ -45,11 +62,12 @@ class priority_queue_prio:
     def is_empty(self):
         return len(self.queue) == 0
 
-class task_scheduler:
+class task_scheduler(metaclass=SingletonMeta):
     def __init__(self):
-       
-        self.active_queue = priority_queue_prio() 
-        self.waiting_queue = priority_queue_exc()  
+       if not hasattr(self, 'initialized'):  
+            self.active_queue = priority_queue_prio() 
+            self.waiting_queue = priority_queue_exc()  
+            self.initialized = True 
 
     def add_task(self, task):
         
@@ -120,8 +138,11 @@ class task_scheduler:
         if exec_time <= current_time:
             discordbot.logger(f"Executing task: {task.name}")
             task.execute()  
-          
-            self.move_to_waiting_queue(task)
+    
+            if task.name != "pause":
+                self.move_to_waiting_queue(task)
+            else:
+                print("pause task skipping adding back ")
         else:
             
             self.active_queue.add(task, priority, exec_time)
@@ -135,12 +156,20 @@ class task_scheduler:
 
 
 def load_resolution_data(file_path):
-    with open(file_path, 'r') as file:
-        data = json.load(file)
-    return data
+    try:
+        with open(file_path, 'r') as file:
+            data = file.read().strip()
+            if not data:
+                discordbot.logger(f"warning: {file_path} is empty no tasks added.")
+                return []
+            return json.loads(data)
+    except (json.JSONDecodeError, FileNotFoundError) as e:
+        print(f"error loading JSON from {file_path}: {e}")
+        return []
 
 
 def main():
+    global scheduler
     scheduler = task_scheduler()
     
     pego_data = load_resolution_data("json_files/pego.json")

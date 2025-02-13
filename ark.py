@@ -37,7 +37,7 @@ def ini():
     utils.press_key("Enter")
     time.sleep(0.3)
     pyautogui.scroll(10) # puts char in first person
-
+    
 def open_tribelog():
     count = 0
     while template.check_template_no_bounds("tribelog_check",0.8) == False and count < 100: # stopping inf loops 
@@ -50,10 +50,10 @@ def close_tribelog():
         time.sleep(0.2)
         windows.click(variables.get_pixel_loc("close_inv_x"),variables.get_pixel_loc("close_inv_y")) # now ready to do whatever we need to 
         
-    if template.window_still_open_no_bounds("tribelog_check",0.8,2):
-        time.sleep(3) # guessing its timer
-        windows.click(variables.get_pixel_loc("close_inv_x"),variables.get_pixel_loc("close_inv_y"))
-        time.sleep(2)
+        if template.window_still_open_no_bounds("tribelog_check",0.8,2):
+            time.sleep(3) # guessing its timer
+            windows.click(variables.get_pixel_loc("close_inv_x"),variables.get_pixel_loc("close_inv_y"))
+            time.sleep(2)
     time.sleep(0.2)
 
 def open_inventory():
@@ -154,7 +154,7 @@ def buffs():
         close_inventory()
         return False
     
-def check_state():
+def check_disconected():
     rejoin = reconnect.start.reconnect(str(settings.server_number))
     if rejoin.check_disconected():
         discordbot.logger("we are disconnected from the server")
@@ -163,7 +163,11 @@ def check_state():
         discordbot.logger("joined back into the server waiting 30 seconds to render everything ")
         time.sleep(60)
         utils.yaw_zero()
-        utils.set_yaw(settings.station_yaw)
+        utils.set_yaw(settings.station_yaw)    
+        
+def check_state():
+    
+    check_disconected()
 
     if template.check_template("beds_title",0.7):
         bed_spawn_in(settings.bed_spawn)
@@ -333,8 +337,7 @@ def bed_spawn_in(bed_name:str):
         count += 1
     
     time.sleep(0.5)
-    windows.click(variables.get_pixel_loc("close_inv_x"),variables.get_pixel_loc("close_inv_y")) # now ready to do whatever we need to 
-    template.window_still_open("tribelog_check",0.8,2)
+    close_tribelog()
 
     global first_run
     if first_run:
@@ -386,11 +389,7 @@ def teleport_not_default(teleporter_name:str):
         time.sleep(0.1)
         count += 1
 
-    if template.check_template_no_bounds("tribelog_check",0.8):
-        time.sleep(0.5)
-        windows.click(variables.get_pixel_loc("close_inv_x"),variables.get_pixel_loc("close_inv_y")) # now ready to do whatever we need to 
-        
-    template.window_still_open_no_bounds("tribelog_check",0.8,2)
+    close_tribelog()
     
     time.sleep(0.4)
     if settings.singleplayer: # correcting for singleplayers wierd tp mechanics
@@ -416,11 +415,7 @@ def teleport_default(teleporter_name): # param teleporter_name incase of unable 
         time.sleep(0.1)
         count += 1
 
-    if template.check_template("tribelog_check",0.8):
-        time.sleep(1)
-        windows.click(variables.get_pixel_loc("close_inv_x"),variables.get_pixel_loc("close_inv_y")) # now ready to do whatever we need to 
-        
-    template.window_still_open("tribelog_check",0.8,2)
+    close_tribelog()
     time.sleep(0.2)
 
     ccc_data_after = console_ccc()

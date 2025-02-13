@@ -3,7 +3,7 @@ import numpy as np
 import settings
 import screen
 import time 
-
+import discordbot
 
 location = {
     "accept":{"start_x":1220, "start_y":958 ,"width":100 ,"height":30},
@@ -28,7 +28,7 @@ location = {
 def check_template(item:str, threshold:float) -> bool:
     
     region = location[item]
-    if settings.screen_resolution == 1440:
+    if screen.screen_resolution == 1440:
         roi = screen.get_screen_roi(region["start_x"], region["start_y"], region["width"], region["height"])
     else:
         roi = screen.get_screen_roi(int(region["start_x"] * 0.75), int(region["start_y"] * 0.75), int(region["width"] * 0.75), int(region["height"] * 0.75))
@@ -41,7 +41,7 @@ def check_template(item:str, threshold:float) -> bool:
     masked_template = cv2.bitwise_and(roi, roi, mask= mask)
     gray_roi = cv2.cvtColor(masked_template, cv2.COLOR_BGR2GRAY)
 
-    image = cv2.imread(f"icons{settings.screen_resolution}/{item}.png")
+    image = cv2.imread(f"icons{screen.screen_resolution}/{item}.png")
     hsv = cv2.cvtColor(image,cv2.COLOR_BGR2HSV)
     mask = cv2.inRange(hsv,lower_boundary,upper_boundary)
     masked_template = cv2.bitwise_and(image, image, mask=mask)
@@ -51,15 +51,15 @@ def check_template(item:str, threshold:float) -> bool:
     min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
 
     if max_val > threshold:
-        #discordbot.logger(f"{item} found:{max_val}")
+        discordbot.logger(f"{item} found:{max_val}")
         return True
-    #discordbot.logger(f"{item} not found:{max_val} threshold:{threshold}")
+    discordbot.logger(f"{item} not found:{max_val} threshold:{threshold}")
     return False
 
 def check_template_no_bounds(item:str, threshold:float) -> bool:
     
     region = location[item]
-    if settings.screen_resolution == 1440:
+    if screen.screen_resolution == 1440:
         roi = screen.get_screen_roi(region["start_x"], region["start_y"], region["width"], region["height"])
     else:
         roi = screen.get_screen_roi(int(region["start_x"] * 0.75), int(region["start_y"] * 0.75), int(region["width"] * 0.75), int(region["height"] * 0.75))
@@ -72,7 +72,7 @@ def check_template_no_bounds(item:str, threshold:float) -> bool:
     masked_template = cv2.bitwise_and(roi, roi, mask= mask)
     gray_roi = cv2.cvtColor(masked_template, cv2.COLOR_BGR2GRAY)
 
-    image = cv2.imread(f"icons{settings.screen_resolution}/{item}.png")
+    image = cv2.imread(f"icons{screen.screen_resolution}/{item}.png")
     hsv = cv2.cvtColor(image,cv2.COLOR_BGR2HSV)
     mask = cv2.inRange(hsv,lower_boundary,upper_boundary)
     masked_template = cv2.bitwise_and(image, image, mask=mask)
@@ -82,9 +82,9 @@ def check_template_no_bounds(item:str, threshold:float) -> bool:
     min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
 
     if max_val > threshold:
-        #discordbot.logger(f"{item} found:{max_val}")
+        discordbot.logger(f"{item} found:{max_val}")
         return True
-    #discordbot.logger(f"{item} not found:{max_val} threshold:{threshold}")
+    discordbot.logger(f"{item} not found:{max_val} threshold:{threshold}")
     return False
 
 

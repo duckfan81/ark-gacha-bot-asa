@@ -39,17 +39,17 @@ def join_server(server_name):
         time.sleep(0.2) 
         windows.click(get_pixel_loc("join_x"), get_pixel_loc("join_y"))
         time.sleep(0.5) # inital wait for the text to appear 
-    recon_utils.window_still_open_no_bounds("join_text",0.7,20) # long wait as it can be on the screen for a long time 
+    recon_utils.window_still_open("join_text",0.7,20) # long wait as it can be on the screen for a long time 
 
     if recon_utils.check_template_no_bounds("mod_join",0.7):
         if recon_utils.template_sleep_no_bounds("req_mods",0.7,10): # idk maybe mods take a while to load
             time.sleep(0.5)
             windows.click(get_pixel_loc("mod_join_x"), get_pixel_loc("mod_join_y")) 
             time.sleep(2)
-            recon_utils.window_still_open_no_bounds("join_text",0.7,20)
+            recon_utils.window_still_open("join_text",0.7,20)
             time.sleep(2)
 
-    if recon_utils.template_sleep_no_bounds("loading_screen",0.7,1):
+    if recon_utils.template_sleep_no_bounds("loading_screen",0.7,0.5):
         recon_utils.window_still_open_no_bounds("loading_screen",0.7,10)
         
         count = 0
@@ -77,7 +77,7 @@ def join_server(server_name):
     
     time.sleep(0.5)
     windows.click(get_pixel_loc("refresh_x"), get_pixel_loc("refresh_y")) #if it cant see we refresh the page
-    if recon_utils.template_sleep_no_bounds("searching",0.7,2):
+    if recon_utils.template_sleep_no_bounds("searching",0.7,0.5):
         recon_utils.window_still_open_no_bounds("searching",0.7,10)
         time.sleep(2)
 

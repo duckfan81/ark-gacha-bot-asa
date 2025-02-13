@@ -66,7 +66,7 @@ class gacha_station(base_task):
         gacha.gacha_dropoff(self.direction)
 
     def get_priority_level(self):
-        return 2
+        return 3
     
     def get_requeue_delay(self):
         delay = 6600    # delay can be static as it will be the same for all gachas 142 stacks took 110 mins
@@ -90,7 +90,7 @@ class pego_station(base_task):
             discordbot.logger(f"no crystals in hotbar not dropping off")
 
     def get_priority_level(self):
-        return 1 # highest prio level as we cant have these get capped 
+        return 2 # highest prio level as we cant have these get capped 
 
     def get_requeue_delay(self):
         return self.delay # delay cannot be constant as stations can cover different amounts of space each |||| 2 stacks of berries to 1 crystal 4 gachas to 1 pego
@@ -104,6 +104,7 @@ class render_station(base_task):
     def execute(self):
         global berry_station 
         berry_station = True # setting to true as we will be away for mostlikly for a few hours
+        ark.check_disconected()
         if render.render_flag == False:
             ark.check_state()
             ark.teleport_not_default(settings.bed_spawn)
@@ -116,3 +117,20 @@ class render_station(base_task):
     def get_requeue_delay(self):
         return 90 # after triggered we will wait for 60 seconds reduces the amount of cpu usage 
     
+class pause(base_task):
+    def __init__(self,time):
+        super().__init__()
+        self.name = "pause"
+        self.time = time
+    def execute(self):
+        ark.check_state()
+        ark.teleport_not_default(settings.bed_spawn)
+        render.enter_tekpod()
+        time.sleep(self.time)
+        render.leave_tekpod()
+        
+    def get_priority_level(self):
+        return 1
+
+    def get_requeue_delay(self):
+        return 0  

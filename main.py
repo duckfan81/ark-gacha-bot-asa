@@ -7,6 +7,9 @@ import pyautogui
 import settings
 import json
 import time
+import discordbot
+import stations.stations as station
+import task_manager
 
 intents = discord.Intents.default()
 pyautogui.FAILSAFE = False
@@ -140,6 +143,24 @@ async def list_pego(interaction: discord.Interaction):
 
     await interaction.response.send_message(response)
 
+@bot.tree.command(name="pause", description="sends the bot back to render bed for X amount of seconds")
+async def reset(interaction: discord.Interaction,time:int):
+    task = task_manager.scheduler
+    pause = station.pause(time)
+    task.add_task(pause)
+    
+async def embed_send(queue_type):
+    log_channel = 0
+    if queue_type == "active_queue":
+        log_channel = bot.get_channel(settings.log_active_queue)
+    else:
+        log_channel = bot.get_channel(settings.log_wait_queue)
+    while True:
+        print(queue_type)
+        embed_msg = await discordbot.embed_create(queue_type)
+        await log_channel.purge()
+        await log_channel.send(embed = embed_msg)
+        await asyncio.sleep(5)
 
 @bot.tree.command()
 async def start(interaction: discord.Interaction):
@@ -156,13 +177,14 @@ async def start(interaction: discord.Interaction):
     with open("txt_files/active.txt", 'w') as active:
         active.write(f"")
     running_tasks.append(bot.loop.create_task(send_new_logs()))
-    running_tasks.append(bot.loop.create_task(active_queue()))
-    running_tasks.append(bot.loop.create_task(wait_queue()))
+    
     
     await interaction.response.send_message(f"starting up bot now you have 5 seconds before start")
     time.sleep(5)
     running_tasks.append(asyncio.create_task(botoptions.task_manager_start()))
-
+    running_tasks.append(bot.loop.create_task(embed_send("active_queue")))
+    running_tasks.append(bot.loop.create_task(embed_send("waiting_queue")))
+    
 @bot.event
 async def on_ready():
     await bot.tree.sync()
