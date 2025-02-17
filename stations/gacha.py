@@ -98,6 +98,7 @@ def gacha_dropoff(direction):
             time.sleep(0.2)
             ark.search_in_inventory("seed")
             temp = True
+        windows.click(variables.get_pixel_loc("inv_slot_start_x")+50,variables.get_pixel_loc("inv_slot_start_y")+70)
         for x in range(8):
             windows.move_mouse(variables.get_pixel_loc("inv_slot_start_x")+50,variables.get_pixel_loc("inv_slot_start_y")+70)
             utils.press_key("DropItem")
