@@ -51,9 +51,9 @@ def check_template(item:str, threshold:float) -> bool:
     min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
 
     if max_val > threshold:
-        discordbot.logger(f"{item} found:{max_val}")
+        #discordbot.logger(f"{item} found:{max_val}")
         return True
-    discordbot.logger(f"{item} not found:{max_val} threshold:{threshold}")
+    #discordbot.logger(f"{item} not found:{max_val} threshold:{threshold}")
     return False
 
 def check_template_no_bounds(item:str, threshold:float) -> bool:
@@ -82,9 +82,9 @@ def check_template_no_bounds(item:str, threshold:float) -> bool:
     min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
 
     if max_val > threshold:
-        discordbot.logger(f"{item} found:{max_val}")
+        #discordbot.logger(f"{item} found:{max_val}")
         return True
-    discordbot.logger(f"{item} not found:{max_val} threshold:{threshold}")
+    #discordbot.logger(f"{item} not found:{max_val} threshold:{threshold}")
     return False
 
 

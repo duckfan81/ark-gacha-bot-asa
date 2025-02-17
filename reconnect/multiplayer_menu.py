@@ -26,6 +26,7 @@ def get_pixel_loc( location):
 def join_server(server_name):
 
     if not recon_utils.check_template_no_bounds("multiplayer", 0.7):
+        utils.press_key("ShowTribeManager")
         return
 
     windows.click(get_pixel_loc("search_x"), get_pixel_loc("search_y"))
@@ -85,3 +86,5 @@ def join_server(server_name):
         time.sleep(2)
         windows.click(get_pixel_loc("back_x"), get_pixel_loc("back_y"))
         time.sleep(2)
+
+    utils.press_key("ShowTribeManager") # if there is a special event going on the loading screen changes this might fix that

@@ -12,6 +12,7 @@ import template
 import stations.render as render
 import reconnect.start
 import reconnect.recon_utils
+import reconnect.crash
 
 global bed_number
 global first_run
@@ -162,6 +163,7 @@ def buffs():
     
 def check_disconected():
     rejoin = reconnect.start.reconnect(str(settings.server_number))
+    
     if rejoin.check_disconected():
         discordbot.logger("we are disconnected from the server")
         rejoin.rejoin_server()
@@ -172,7 +174,9 @@ def check_disconected():
         utils.set_yaw(settings.station_yaw)    
         
 def check_state():
-    
+    crash = reconnect.crash.crash(windows.hwnd)
+    crash.crash_rejoin()  # wecheck the crash before disconected as we can rejoin back with disconect 
+
     check_disconected()
 
     if template.check_template("beds_title",0.7):
@@ -440,9 +444,10 @@ def teleport_default(teleporter_name): # param teleporter_name incase of unable 
 
 if __name__ == "__main__":
     time.sleep(2)
-    check_state()
+    pyautogui.keyDown("~")
+    #utils.press_key_scan_code("consolekeys")
     pass
-    
+
 
 
    

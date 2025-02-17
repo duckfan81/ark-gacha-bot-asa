@@ -1,23 +1,18 @@
-import settings
 import re 
 import os
-
 import psutil
 from pathlib import Path
 
-process_name = "ArkAscended.exe" 
 
-
-def path():
+def path(process_name):
     print("finding path now ")
     for proc in psutil.process_iter(attrs=[ 'name', 'exe']):
         
         if proc.info['name'] == process_name:
             exe_path = proc.info['exe']
-            path = Path(exe_path)
-            return path.parents[3]
+            return Path(exe_path)
 
-base_path = path()
+base_path = path("ArkAscended.exe" ).parents[3]
 
 def get_user_settings(setting_name):
 

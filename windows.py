@@ -4,7 +4,6 @@ import screen
 import time
 from ctypes import wintypes
 
-
 def find_window_by_title(title):
     return ctypes.windll.user32.FindWindowW(None, title)
 

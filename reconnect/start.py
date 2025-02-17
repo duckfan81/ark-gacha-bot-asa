@@ -1,7 +1,5 @@
-from reconnect import join_menu
-from reconnect import main_menu
-from reconnect import multiplayer_menu
-from reconnect import recon_utils
+from reconnect import join_menu , main_menu , multiplayer_menu , recon_utils , crash
+
 import template
 
 class reconnect():

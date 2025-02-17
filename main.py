@@ -148,6 +148,7 @@ async def reset(interaction: discord.Interaction,time:int):
     task = task_manager.scheduler
     pause = station.pause(time)
     task.add_task(pause)
+    await interaction.response.send_message(f"pause task added will now pause for {time} seconds once the next task finishes")
     
 async def embed_send(queue_type):
     log_channel = 0
@@ -156,7 +157,6 @@ async def embed_send(queue_type):
     else:
         log_channel = bot.get_channel(settings.log_wait_queue)
     while True:
-        print(queue_type)
         embed_msg = await discordbot.embed_create(queue_type)
         await log_channel.purge()
         await log_channel.send(embed = embed_msg)
