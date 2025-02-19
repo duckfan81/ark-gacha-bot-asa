@@ -87,20 +87,8 @@ def vault_deposit(side,items):
 
 def drop_useless():
     discordbot.logger("dropping all useless things")
-    time.sleep(0.5)
-    utils.press_key("Crouch")
-    time.sleep(0.4)
     utils.press_key("ShowMyInventory")
-    if template.template_sleep("inventory",0.7,2):
-        ark.search_in_inventory(settings.berry_type)
-        ark.drop_all_inv()
-        time.sleep(0.4)
-        ark.close_inventory()
-    time.sleep(0.5)
-    utils.press_key("Run")
-    time.sleep(0.5)
-    utils.press_key("ShowMyInventory")
-
+    
     if template.template_sleep("inventory",0.7,2):
         ark.drop_all_inv()
         time.sleep(0.4)
@@ -108,14 +96,6 @@ def drop_useless():
     time.sleep(0.5)
     utils.turn_down(80)
     time.sleep(0.5)
-    ark.open_structure()
-    if template.template_sleep("inventory",0.7,1):
-        ark.transfer_all_from() # dont need a close as a bag will disapear
-        ark.close_inventory()
-    else:
-        discordbot.logger("no bag dropped")
-    time.sleep(0.8)
-
 
 def depo_grinder():
     utils.turn_right(180)
@@ -166,7 +146,7 @@ def collect_grindables():
         ark.transfer_all_from()
         time.sleep(0.2)
         ark.close_inventory()
-    time.sleep(0.8)
+    time.sleep(0.5)
     utils.turn_left(90)
     time.sleep(0.5) # stopping hitting E on the fabricator
     dedi_deposit(settings.height_grind)

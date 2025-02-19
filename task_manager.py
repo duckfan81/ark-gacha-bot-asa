@@ -185,7 +185,12 @@ def main():
         name = entry_gacha["name"]
         teleporter = entry_gacha["teleporter"]
         direction = entry_gacha["side"]
-        task = stations.gacha_station(name, teleporter, direction)
+        resource = entry_gacha["resource_type"]
+        if resource == "collect":
+            depo = entry_gacha["depo_tp"]
+            task = stations.snail_pheonix(name,teleporter,direction,depo)
+        else:
+            task = stations.gacha_station(name, teleporter, direction)
         scheduler.add_task(task)
         
     scheduler.add_task(stations.render_station())

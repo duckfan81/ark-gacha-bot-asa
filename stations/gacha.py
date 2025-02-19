@@ -71,7 +71,7 @@ def gacha_dropoff(direction):
         utils.turn_left(40)
     time.sleep(0.3)    
     ark.open_structure()
-    #take all 
+    
     if template.check_template("inventory",0.7) == False: # assuming that the bot didnt turn properly
         utils.zero()
         utils.set_yaw(settings.station_yaw)
@@ -146,7 +146,34 @@ def gacha_dropoff(direction):
     else:
         utils.turn_right(40)
    
-   
+def gacha_collection(direction): # this is used for gachas that have snails or phenixs 
+    time.sleep(0.2)
+    if direction == "right":
+        utils.turn_right(40) 
+    else:
+        utils.turn_left(40)
+    time.sleep(0.3)    
+    ark.open_structure()
+
+    if template.check_template("inventory",0.7) == False: # assuming that the bot didnt turn properly
+        utils.zero()
+        utils.set_yaw(settings.station_yaw)
+        if direction == "right":
+            utils.turn_right(40) 
+        else:
+            utils.turn_left(40)
+        time.sleep(0.2)
+        ark.open_structure()
+
+    ark.transfer_all_from()
+    time.sleep(0.5)
+    ark.close_inventory() 
+
+    if direction == "right":
+        utils.turn_left(40)
+    else:
+        utils.turn_right(40)
+        
 if __name__ == "__main__":
     time.sleep(2)
     iguanadon()

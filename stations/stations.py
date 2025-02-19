@@ -117,6 +117,26 @@ class render_station(base_task):
     def get_requeue_delay(self):
         return 90 # after triggered we will wait for 60 seconds reduces the amount of cpu usage 
     
+class snail_pheonix(base_task):
+    def __init__(self,name,teleporter_name,direction,depo):
+        super().__init__()
+        self.name = name
+        self.teleporter_name = teleporter_name
+        self.direction = direction
+        self.depo_tp = depo
+
+    def execute(self):
+        ark.check_state()
+        ark.teleport_not_default(self.teleporter_name)
+        gacha.gacha_collection(self.direction)
+        ark.teleport_default(self.depo_tp)
+        deposit.dedi_deposit(settings.height_ele)
+        
+    def get_priority_level(self):
+        return 4
+    def get_requeue_delay(self):
+        return 13200
+
 class pause(base_task):
     def __init__(self,time):
         super().__init__()
