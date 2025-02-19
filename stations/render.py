@@ -14,7 +14,7 @@ render_flag = False #starts as false as obviously we are not rendering anything
 def open_inv_dropall():
     utils.press_key("ShowMyInventory")
     if template.template_sleep("inventory", 0.7, 2):
-        ark.drop_all()
+        ark.drop_all_inv()
         time.sleep(0.4)
         ark.close_inventory()
 
@@ -22,11 +22,11 @@ def enter_tekpod():
     global render_flag
     retry = 0  
     while retry < 3: 
-        if retry == 3:
+        if retry == 2:
             discordbot.logger("killing ourselfs and respawning")
             ark.implant_eat()
             ark.check_state()
-        utils.press_key("Jump") # incase player is crouched somehow
+        utils.press_key("Run") # incase player is crouched somehow
         time.sleep(1)
         utils.zero()
         utils.set_yaw(settings.station_yaw)

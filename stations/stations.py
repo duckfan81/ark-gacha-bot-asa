@@ -9,6 +9,8 @@ from stations import pego
 from stations import deposit
 from abc import ABC ,abstractmethod
 global berry_station
+global last_berry
+last_berry = 0
 berry_station = True
 
 class base_task(ABC):
@@ -38,14 +40,17 @@ class gacha_station(base_task):
     def execute(self):
         ark.check_state()
         global berry_station
+        global last_berry
         temp = False
-        
-        if berry_station: 
-            ark.teleport_not_default(settings.berry_station)
+        time_between = time.time() - last_berry
+
+        if (berry_station and (time_between > 4*60*60)) or time_between > 4*60*60: # if time is greater than 4 hours since the last time you went to berry station 
+            ark.teleport_not_default(settings.berry_station)                    # or if berry station is true( when you go to tekpod and drop all ) and the time between has been longer than 30 mins since youve last been 
             if settings.external_berry: 
                 discordbot.logger("sleeping for 20 seconds as external")
                 time.sleep(20)#letting station spawn in if you have to tp away
             gacha.berry_station()
+            last_berry = time.time()
             berry_station = False
             temp = True
         
@@ -61,7 +66,7 @@ class gacha_station(base_task):
         gacha.gacha_dropoff(self.direction)
 
     def get_priority_level(self):
-        return 2
+        return 3
     
     def get_requeue_delay(self):
         delay = 6600    # delay can be static as it will be the same for all gachas 142 stacks took 110 mins
@@ -85,7 +90,7 @@ class pego_station(base_task):
             discordbot.logger(f"no crystals in hotbar not dropping off")
 
     def get_priority_level(self):
-        return 1 # highest prio level as we cant have these get capped 
+        return 2 # highest prio level as we cant have these get capped 
 
     def get_requeue_delay(self):
         return self.delay # delay cannot be constant as stations can cover different amounts of space each |||| 2 stacks of berries to 1 crystal 4 gachas to 1 pego
@@ -99,6 +104,7 @@ class render_station(base_task):
     def execute(self):
         global berry_station 
         berry_station = True # setting to true as we will be away for mostlikly for a few hours
+        ark.check_disconected()
         if render.render_flag == False:
             ark.check_state()
             ark.teleport_not_default(settings.bed_spawn)
@@ -111,3 +117,20 @@ class render_station(base_task):
     def get_requeue_delay(self):
         return 90 # after triggered we will wait for 60 seconds reduces the amount of cpu usage 
     
+class pause(base_task):
+    def __init__(self,time):
+        super().__init__()
+        self.name = "pause"
+        self.time = time
+    def execute(self):
+        ark.check_state()
+        ark.teleport_not_default(settings.bed_spawn)
+        render.enter_tekpod()
+        time.sleep(self.time)
+        render.leave_tekpod()
+        
+    def get_priority_level(self):
+        return 1
+
+    def get_requeue_delay(self):
+        return 0  

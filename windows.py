@@ -4,7 +4,6 @@ import screen
 import time
 from ctypes import wintypes
 
-
 def find_window_by_title(title):
     return ctypes.windll.user32.FindWindowW(None, title)
 
@@ -82,5 +81,3 @@ def click(x, y):
     lparam = (y << 16) | x
     ctypes.windll.user32.PostMessageW(hwnd, WM_LBUTTONDOWN, 0, lparam)
     ctypes.windll.user32.PostMessageW(hwnd, WM_LBUTTONUP, 0, lparam)
-
-

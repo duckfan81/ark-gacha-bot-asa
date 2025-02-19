@@ -14,29 +14,42 @@ WM_CHAR = 0x0102
 keymap = {
     "tab":0x09,"escape" :0x1B,"return":0x0D, "enter":0x0D, "leftcontrol":0xA2, "zero": 0x30,
     "one":0x31, "two":0x32, "three":0x33 , "four":0x34 , "five":0x35 , "six":0x36 , "seven":0x37,
-    "eight":0x38, "nine":0x39, "thumbmousebutton": 0x05, "thumbmousebutton2": 0x06, "spacebar": 0x20,"hyphen":0xBD
+    "eight":0x38, "nine":0x39, "thumbmousebutton": 0x05, "thumbmousebutton2": 0x06, "spacebar": 0x20,"hyphen":0xBD,
+    "leftshift":0xA0 , "tilde":0xC0
 }
+
+default_keymap = { 
+    "use": "e", "consolekeys": "tilde", "showtribemanager": "l", "showmyinventory": "i", "accessinventory": "f", "dropitem":"o",
+    "pausemenu": "escape","reload":"r","run":"leftshift","crouch":"c","useitem1": "one","useitem2": "two","useitem3": "three","useitem4": "four",
+    "useitem5": "five","useitem6": "six","useitem7": "seven","useitem8": "eight","useitem9": "nine","useitem10": "zero"
+}
+
 hwnd = windows.hwnd
 ctypes.windll.user32.VkKeyScanA.argtypes = [ctypes.c_char]
 ctypes.windll.user32.VkKeyScanA.restype = ctypes.c_short  
 
-def get_vk_code_for_char(char):
-    
-    char = char.lower()
+def keymap_return(key_input):
+    key = key_input.lower()
 
-    if char in keymap:
-        return keymap[char]
+    if key in default_keymap: # this would only be triggered if the input.ini file is empty || base key mpa
+
+        key = default_keymap[key]
+        if key in keymap:
+            return keymap[key]
+
+    if key in keymap:
+        return keymap[key]
  
-    if len(char) == 1:
-        result = ctypes.windll.user32.VkKeyScanA(ctypes.c_char(char.encode('ascii')))
+    if len(key) == 1:
+        result = ctypes.windll.user32.VkKeyScanA(ord(key))
    
         vk_code = result & 0xFF
         
         return vk_code
 
 def press_key(input_action):
+    vk_code = keymap_return(local_player.get_input_settings(input_action))
 
-    vk_code = get_vk_code_for_char(local_player.get_input_settings(input_action))
     ctypes.windll.user32.PostMessageW(hwnd, WM_KEYDOWN , vk_code, 0)
     time.sleep(0.05)
     ctypes.windll.user32.PostMessageW(hwnd, WM_KEYUP , vk_code, 0)
@@ -71,7 +84,7 @@ def set_yaw(yaw):
         turn_left(-diff)
     else:
         turn_right(diff)
-    current_yaw = normalize_yaw(current_yaw - (-yaw))
+    current_yaw = normalize_yaw(yaw)
 
 def set_pitch(pitch):
     global current_pitch
@@ -81,7 +94,7 @@ def set_pitch(pitch):
     else:
         turn_down(change)
     current_pitch = pitch
-    
+
 def yaw_zero():
     global current_yaw
     ccc_data = ark.console_ccc()
@@ -90,7 +103,6 @@ def yaw_zero():
         turn_left(float(ccc_data[3]))
     else:
         turn_right(-float(ccc_data[3]))
-    current_yaw = 0
 
 def pitch_zero():
     global current_pitch
@@ -103,7 +115,6 @@ def pitch_zero():
     current_pitch = 0
 
 def zero():
-    global current_pitch
     global current_yaw
     ccc_data = ark.console_ccc()
     current_yaw = 0
@@ -113,19 +124,18 @@ def zero():
 
     pitch_zero()
 
-    current_yaw = 0
     current_pitch = 0
+    current_yaw = 0
 
 def turn_right(degrees):
     global current_yaw
     windows.turn(degrees, 0)
     current_yaw = normalize_yaw(current_yaw + degrees)
 
-
 def turn_left(degrees):
     global current_yaw
     windows.turn(-degrees, 0)
-    current_yaw = normalize_yaw(current_yaw - (-degrees))
+    current_yaw = normalize_yaw(current_yaw + (-degrees))
     
 
 def turn_down(degrees):

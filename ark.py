@@ -10,6 +10,9 @@ import win32clipboard
 import windows
 import template
 import stations.render as render
+import reconnect.start
+import reconnect.recon_utils
+import reconnect.crash
 
 global bed_number
 global first_run
@@ -35,7 +38,7 @@ def ini():
     utils.press_key("Enter")
     time.sleep(0.3)
     pyautogui.scroll(10) # puts char in first person
-
+    
 def open_tribelog():
     count = 0
     while template.check_template_no_bounds("tribelog_check",0.8) == False and count < 100: # stopping inf loops 
@@ -48,10 +51,10 @@ def close_tribelog():
         time.sleep(0.2)
         windows.click(variables.get_pixel_loc("close_inv_x"),variables.get_pixel_loc("close_inv_y")) # now ready to do whatever we need to 
         
-    if template.window_still_open_no_bounds("tribelog_check",0.8,2):
-        time.sleep(3) # guessing its timer
-        windows.click(variables.get_pixel_loc("close_inv_x"),variables.get_pixel_loc("close_inv_y"))
-        time.sleep(2)
+        if template.window_still_open_no_bounds("tribelog_check",0.8,2):
+            time.sleep(3) # guessing its timer
+            windows.click(variables.get_pixel_loc("close_inv_x"),variables.get_pixel_loc("close_inv_y"))
+            time.sleep(2)
     time.sleep(0.2)
 
 def open_inventory():
@@ -101,7 +104,7 @@ def search_in_object(item:str):
     discordbot.logger(f"searching in structure/dino for {item}")
     time.sleep(0.2)
     windows.click(variables.get_pixel_loc("search_object_x"),variables.get_pixel_loc("transfer_all_y"))
-    windows.click(variables.get_pixel_loc("search_object_x"),variables.get_pixel_loc("transfer_all_y")) #double click to overright if previous
+    pyautogui.hotkey("ctrl","a") #double click to overright if previous
     time.sleep(0.2)
     utils.write(item)
     time.sleep(0.1)
@@ -110,16 +113,21 @@ def search_in_inventory(item:str):
     discordbot.logger(f"searching in inventory for {item}")
     time.sleep(0.2)
     windows.click(variables.get_pixel_loc("search_inventory_x"),variables.get_pixel_loc("transfer_all_y")) 
-    time.sleep(0.2)
-    windows.click(variables.get_pixel_loc("search_inventory_x"),variables.get_pixel_loc("transfer_all_y"))  # double click to overright if previous
+    pyautogui.hotkey("ctrl","a")  # double click to overright if previous
     time.sleep(0.2)
     utils.write(item)
     time.sleep(0.1)
 
-def drop_all():  
+def drop_all_inv():  
     discordbot.logger(f"dropping all items")
     time.sleep(0.2)
     windows.click(variables.get_pixel_loc("drop_all_x"),variables.get_pixel_loc("transfer_all_y")) 
+    time.sleep(0.1)
+
+def drop_all_obj():
+    discordbot.logger(f"dropping all items")
+    time.sleep(0.2)
+    windows.click(variables.get_pixel_loc("drop_all_obj_x"),variables.get_pixel_loc("transfer_all_y")) 
     time.sleep(0.1)
 
 def transfer_all_from(): 
@@ -153,7 +161,24 @@ def buffs():
         close_inventory()
         return False
     
+def check_disconected():
+    rejoin = reconnect.start.reconnect(str(settings.server_number))
+    
+    if rejoin.check_disconected():
+        discordbot.logger("we are disconnected from the server")
+        rejoin.rejoin_server()
+        close_tribelog()
+        discordbot.logger("joined back into the server waiting 30 seconds to render everything ")
+        time.sleep(60)
+        utils.yaw_zero()
+        utils.set_yaw(settings.station_yaw)    
+        
 def check_state():
+    crash = reconnect.crash.crash(windows.hwnd)
+    crash.crash_rejoin()  # wecheck the crash before disconected as we can rejoin back with disconect 
+
+    check_disconected()
+
     if template.check_template("beds_title",0.7):
         bed_spawn_in(settings.bed_spawn)
         time.sleep(0.5)
@@ -224,7 +249,7 @@ def implant_eat():
     pyautogui.click(variables.get_pixel_loc("implant_eat_x"),variables.get_pixel_loc("implant_eat_y"))
     time.sleep(10) # acouting for lag on high ping 
     utils.press_key("Use")
-    while template.check_template("death_regions") == False:
+    while template.check_template("death_regions",0.7) == False:
         time.sleep(0.2)
     time.sleep(1)
 
@@ -295,11 +320,11 @@ def bed_spawn_in(bed_name:str):
     
     if template.check_template("death_regions",0.7) == True:
         windows.click(variables.get_pixel_loc("search_bar_bed_dead_x"),variables.get_pixel_loc("search_bar_bed_y"))
-        windows.click(variables.get_pixel_loc("search_bar_bed_dead_x"),variables.get_pixel_loc("search_bar_bed_y")) # double click for saftey against pre-writen HAS TO BE COMBINED
+        pyautogui.hotkey("ctrl","a")
         utils.write(bed_name)
     else:
         windows.click(variables.get_pixel_loc("search_bar_bed_alive_x"),variables.get_pixel_loc("search_bar_bed_y"))
-        windows.click(variables.get_pixel_loc("search_bar_bed_alive_x"),variables.get_pixel_loc("search_bar_bed_y")) # double click for saftey against pre-writen HAS TO BE COMBINED
+        pyautogui.hotkey("ctrl","a")
         utils.write(bed_name)
 
     time.sleep(0.2)
@@ -322,8 +347,7 @@ def bed_spawn_in(bed_name:str):
         count += 1
     
     time.sleep(0.5)
-    windows.click(variables.get_pixel_loc("close_inv_x"),variables.get_pixel_loc("close_inv_y")) # now ready to do whatever we need to 
-    template.window_still_open("tribelog_check",0.8,2)
+    close_tribelog()
 
     global first_run
     if first_run:
@@ -355,7 +379,7 @@ def teleport_not_default(teleporter_name:str):
         time.sleep(10)
     
     windows.click(variables.get_pixel_loc("search_bar_bed_alive_x"),variables.get_pixel_loc("search_bar_bed_y"))
-    windows.click(variables.get_pixel_loc("search_bar_bed_alive_x"),variables.get_pixel_loc("search_bar_bed_y"))
+    pyautogui.hotkey("ctrl","a")
     utils.write(teleporter_name)
 
     time.sleep(0.2)
@@ -375,11 +399,7 @@ def teleport_not_default(teleporter_name:str):
         time.sleep(0.1)
         count += 1
 
-    if template.check_template_no_bounds("tribelog_check",0.8):
-        time.sleep(0.5)
-        windows.click(variables.get_pixel_loc("close_inv_x"),variables.get_pixel_loc("close_inv_y")) # now ready to do whatever we need to 
-        
-    template.window_still_open_no_bounds("tribelog_check",0.8,2)
+    close_tribelog()
     
     time.sleep(0.4)
     if settings.singleplayer: # correcting for singleplayers wierd tp mechanics
@@ -388,7 +408,7 @@ def teleport_not_default(teleporter_name:str):
     utils.turn_up(80)
     #utils.pitch_zero() # correcting pitch back to 0 from looking down at the tp
     time.sleep(0.4)
-
+    utils.press_key("Run")
 
 def teleport_default(teleporter_name): # param teleporter_name incase of unable to default
     
@@ -405,11 +425,7 @@ def teleport_default(teleporter_name): # param teleporter_name incase of unable 
         time.sleep(0.1)
         count += 1
 
-    if template.check_template("tribelog_check",0.8):
-        time.sleep(1)
-        windows.click(variables.get_pixel_loc("close_inv_x"),variables.get_pixel_loc("close_inv_y")) # now ready to do whatever we need to 
-        
-    template.window_still_open("tribelog_check",0.8,2)
+    close_tribelog()
     time.sleep(0.2)
 
     ccc_data_after = console_ccc()
@@ -428,11 +444,10 @@ def teleport_default(teleporter_name): # param teleporter_name incase of unable 
 
 if __name__ == "__main__":
     time.sleep(2)
-    open_inventory()
-    time.sleep(2)
-    close_inventory()
+    pyautogui.keyDown("~")
+    #utils.press_key_scan_code("consolekeys")
     pass
-    
+
 
 
    
