@@ -46,6 +46,8 @@ class gacha_station(base_task):
 
         if (berry_station and (time_between > 4*60*60)) or time_between > 4*60*60: # if time is greater than 4 hours since the last time you went to berry station 
             ark.teleport_not_default(settings.berry_station)                    # or if berry station is true( when you go to tekpod and drop all ) and the time between has been longer than 30 mins since youve last been 
+            if not ark.verify_location(settings.berry_station):
+                discordbot.logger("Cannot verify correct station")     # What to do if can't get back on track?
             if settings.external_berry: 
                 discordbot.logger("sleeping for 20 seconds as external")
                 time.sleep(20)#letting station spawn in if you have to tp away

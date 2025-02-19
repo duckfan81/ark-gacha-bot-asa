@@ -440,7 +440,39 @@ def teleport_default(teleporter_name): # param teleporter_name incase of unable 
         time.sleep(0.5)
         teleport_not_default(teleporter_name)
 
+
+def verify_location(tp_name):
+    tp_count = 0
+    returnvalue = True
+    tp_attempts = 4
+    station = utils.load_station_info(tp_name)
+    
+    while tp_count < tp_attempts:
+        count = 0
+        ccc_data_before = console_ccc()
+        if abs(station.xpos - ccc_data_before[0]) > 1:
+            count += 1
+        if abs(station.ypos - ccc_data_before[2]) > 1 & count == 0:
+            count += 1
+        if abs(station.yaw - ccc_data_before[3]) > 1 & count == 0:
+            count += 1
+
+
+        if count == 0:
+            returnvalue = True
+        else:  
+            if tp_count > 1:
+                teleport_not_default(settings.bed_spawn)
         
+            teleport_not_default(station.name)
+            tp_count += 1
+
+    if  tp_count == tp_attempts:
+        returnvalue = False
+
+    return returnvalue
+    
+
 
 if __name__ == "__main__":
     time.sleep(2)

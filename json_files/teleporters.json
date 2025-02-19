@@ -1,22 +1,37 @@
 [
     {
         "name": "GACHAPAIR01",
+        "xpos": -1,
+        "ypos": -1,
+        "zpos": -1,
         "yaw": 82
     },
     {
         "name": "GACHAPAIR2",
+        "xpos": -1,
+        "ypos": -1,
+        "zpos": -1,
         "yaw": 142
     },
     {
         "name": "GACHAPAIR3",
+        "xpos": -1,
+        "ypos": -1,
+        "zpos": -1,
         "yaw": -157
     },
     {
         "name": "GACHAPAIR4",
+        "xpos": -1,
+        "ypos": -1,
+        "zpos": -1,
         "yaw": 99
     },
     {
         "name": "gachapego01",
+        "xpos": -1,
+        "ypos": -1,
+        "zpos": -1,
         "yaw": -100
     }
     
