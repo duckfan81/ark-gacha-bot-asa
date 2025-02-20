@@ -129,7 +129,7 @@ class snail_pheonix(base_task):
         ark.check_state()
         ark.teleport_not_default(self.teleporter_name)
         gacha.gacha_collection(self.direction)
-        ark.teleport_default(self.depo_tp)
+        ark.teleport_not_default(self.depo_tp)
         deposit.dedi_deposit(settings.height_ele)
         
     def get_priority_level(self):
