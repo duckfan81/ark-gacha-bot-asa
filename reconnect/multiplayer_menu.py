@@ -31,7 +31,7 @@ def join_server(server_name):
 
     windows.click(get_pixel_loc("search_x"), get_pixel_loc("search_y"))
     time.sleep(0.1)
-    pyautogui.hotkey("ctrl", "a")
+    utils.ctrl_a()
     utils.write(server_name)
     time.sleep(0.2)    
     windows.click(get_pixel_loc("first_server_x"), get_pixel_loc("first_server_y"))
@@ -86,5 +86,5 @@ def join_server(server_name):
         time.sleep(2)
         windows.click(get_pixel_loc("back_x"), get_pixel_loc("back_y"))
         time.sleep(2)
-
+    
     utils.press_key("ShowTribeManager") # if there is a special event going on the loading screen changes this might fix that

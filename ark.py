@@ -104,7 +104,7 @@ def search_in_object(item:str):
     discordbot.logger(f"searching in structure/dino for {item}")
     time.sleep(0.2)
     windows.click(variables.get_pixel_loc("search_object_x"),variables.get_pixel_loc("transfer_all_y"))
-    pyautogui.hotkey("ctrl","a") #double click to overright if previous
+    utils.ctrl_a() 
     time.sleep(0.2)
     utils.write(item)
     time.sleep(0.1)
@@ -113,7 +113,7 @@ def search_in_inventory(item:str):
     discordbot.logger(f"searching in inventory for {item}")
     time.sleep(0.2)
     windows.click(variables.get_pixel_loc("search_inventory_x"),variables.get_pixel_loc("transfer_all_y")) 
-    pyautogui.hotkey("ctrl","a")  # double click to overright if previous
+    utils.ctrl_a()  
     time.sleep(0.2)
     utils.write(item)
     time.sleep(0.1)
@@ -320,11 +320,11 @@ def bed_spawn_in(bed_name:str):
     
     if template.check_template("death_regions",0.7) == True:
         windows.click(variables.get_pixel_loc("search_bar_bed_dead_x"),variables.get_pixel_loc("search_bar_bed_y"))
-        pyautogui.hotkey("ctrl","a")
+        utils.ctrl_a()
         utils.write(bed_name)
     else:
         windows.click(variables.get_pixel_loc("search_bar_bed_alive_x"),variables.get_pixel_loc("search_bar_bed_y"))
-        pyautogui.hotkey("ctrl","a")
+        utils.ctrl_a()
         utils.write(bed_name)
 
     time.sleep(0.2)
@@ -379,7 +379,7 @@ def teleport_not_default(teleporter_name:str):
         time.sleep(10)
     
     windows.click(variables.get_pixel_loc("search_bar_bed_alive_x"),variables.get_pixel_loc("search_bar_bed_y"))
-    pyautogui.hotkey("ctrl","a")
+    utils.ctrl_a()
     utils.write(teleporter_name)
 
     time.sleep(0.2)

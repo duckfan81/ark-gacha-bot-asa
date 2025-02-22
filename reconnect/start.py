@@ -17,6 +17,6 @@ class reconnect():
             main_menu.enter_menu()
             join_menu.enter_menu()
             multiplayer_menu.join_server(self.server)
-            if template.check_template_no_bounds("tribelog_check",0.8):
+            if template.check_template_no_bounds("tribelog_check",0.8) or template.check_template("death_regions",0.7):
                 joined = True
                 return 

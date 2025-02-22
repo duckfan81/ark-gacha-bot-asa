@@ -40,5 +40,6 @@ def enter_menu():
         windows.click(get_pixel_loc("accept_x"),get_pixel_loc("accept_y"))
         recon_utils.window_still_open_no_bounds("accept",0.7,1)
 
+    windows.click(get_pixel_loc("accept_x"),get_pixel_loc("accept_y")) # pressing in case something is on screen
     windows.click(get_pixel_loc("start_x"),get_pixel_loc("start_y"))
     recon_utils.window_still_open_no_bounds("join_last_session",0.7,1)

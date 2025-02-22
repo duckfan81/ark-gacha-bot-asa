@@ -61,7 +61,15 @@ def write(text):
     for c in text:
         post_charecter(c)
         
-
+def ctrl_a(): # hotkey for sending ctrl a 
+    ctypes.windll.user32.SendMessageW(windows.hwnd, WM_KEYDOWN, 0x11, 0)
+    time.sleep(0.1)
+    ctypes.windll.user32.SendMessageW(windows.hwnd, WM_KEYDOWN, 0x41, 0)
+    time.sleep(0.1)  
+    
+    ctypes.windll.user32.SendMessageW(windows.hwnd, WM_KEYUP, 0x41, 0)
+    time.sleep(0.1)
+    ctypes.windll.user32.SendMessageW(windows.hwnd, WM_KEYUP, 0x11, 0)
 """
 FUNCTIONS FOR MOUSE MOVEMENT
 """
