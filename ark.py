@@ -154,9 +154,14 @@ def buffs():
     if template.check_buffs("tek_pod_buff",0.7):
         close_inventory()
         return 2 
-    elif template.check_buffs("starving",0.7) or template.check_buffs("dehydration",0.7):
+    elif template.check_buffs("starving",0.7):
+        discordbot.logger("char is starving")
         close_inventory()
         return 3
+    elif template.check_buffs("dehydration",0.7):
+        discordbot.logger("char is dehydrated")
+        close_inventory()
+        return 4
     else:
         close_inventory()
         return False
@@ -196,8 +201,8 @@ def check_state():
         return
 
     # if starving.....
-    if type == 3:
-        discordbot.logger("we are out of food or water so we are tping back to render for 30 seconds to replenish")
+    if type == 3 or type == 4:
+        discordbot.logger("tping back to render bed to replenish")
         time.sleep(1)
         teleport_not_default(settings.bed_spawn)
         render.enter_tekpod()
