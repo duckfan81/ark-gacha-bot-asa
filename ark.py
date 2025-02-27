@@ -184,32 +184,39 @@ def check_state():
 
     check_disconected()
 
-    if template.check_template("beds_title",0.7):
-        bed_spawn_in(settings.bed_spawn)
-        time.sleep(0.5)
-        utils.yaw_zero()
-        utils.set_yaw(settings.station_yaw)
-        return
+    clear = False
+    loopcount = 0
+    while not clear and loopcount < 3:   #loop in case multiple conditions exist (i.e. tribelog and tekpod)
+        clear = True
+        loopcount += 1
+        if template.check_template("beds_title",0.7):
+            bed_spawn_in(settings.bed_spawn)
+            time.sleep(0.5)
+            utils.yaw_zero()
+            utils.set_yaw(settings.station_yaw)
+            clear = False
     
-    if template.check_template_no_bounds("tribelog_check",0.7):
-        close_tribelog()
-        return
+        if template.check_template_no_bounds("tribelog_check",0.7):
+            close_tribelog()
+            clear = False
     
-    type = buffs() 
-    if type == 2 or render.render_flag:
-        render.leave_tekpod()
-        return
+        type = buffs() 
+        if type == 2 or render.render_flag:
+            render.leave_tekpod()
+            clear = False
 
-    # if starving.....
-    if type == 3 or type == 4:
-        discordbot.logger("tping back to render bed to replenish")
-        time.sleep(1)
-        teleport_not_default(settings.bed_spawn)
-        render.enter_tekpod()
-        time.sleep(30) #idk easy way to ensure that the food goes to the top
-        render.leave_tekpod()
-        time.sleep(1)
-        return
+        # if starving.....
+        if type == 3 or type == 4:
+            discordbot.logger("tping back to render bed to replenish")
+            time.sleep(1)
+            teleport_not_default(settings.bed_spawn)
+            render.enter_tekpod()
+            time.sleep(30) #idk easy way to ensure that the food goes to the top
+            render.leave_tekpod()
+            time.sleep(1)
+            clear = False
+    if loopcount >= 3:
+        discordbot.logger("State could not be corrected")
 
 
 def popcorn_inventory(item):
