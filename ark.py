@@ -421,7 +421,7 @@ def teleport_not_default(arg):
     if isinstance(arg, station_metadata):
         stationdata = arg
     else:
-        stationdata = get_station_metadata(arg:str)
+        stationdata = get_station_metadata(arg)
 
     teleporter_name = stationdata.name
 
