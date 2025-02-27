@@ -21,15 +21,15 @@ def berry_station():
     berry_collection()
     utils.turn_up(50)
     
-def iguanadon():
+def iguanadon(metadata):
     #put berries in
     time.sleep(0.2)
-    utils.set_yaw(settings.station_yaw)
+    utils.set_yaw(metadata.yaw)
     time.sleep(0.2)
     ark.open_structure()
     if template.check_template("inventory",0.7) == False:
         utils.zero()
-        utils.set_yaw(settings.station_yaw)
+        utils.set_yaw(metadata.yaw)
         time.sleep(0.2)
         ark.open_structure()
         time.sleep(0.2)
@@ -62,7 +62,8 @@ def iguanadon():
     ark.close_inventory()
     time.sleep(0.2)
 
-def gacha_dropoff(direction):
+def gacha_dropoff(metadata):
+    direction = metadata.side
     time.sleep(0.2)
     if direction == "right":
         utils.turn_right(40) 
@@ -73,7 +74,7 @@ def gacha_dropoff(direction):
     
     if template.check_template("inventory",0.7) == False: # assuming that the bot didnt turn properly
         utils.zero()
-        utils.set_yaw(settings.station_yaw)
+        utils.set_yaw(metadata.yaw)
         if direction == "right":
             utils.turn_right(40) 
         else:
@@ -145,7 +146,8 @@ def gacha_dropoff(direction):
     else:
         utils.turn_right(40)
    
-def gacha_collection(direction): # this is used for gachas that have snails or phenixs 
+def gacha_collection(metadata): # this is used for gachas that have snails or phenixs 
+    direction = metadata.side
     time.sleep(0.2)
     if direction == "right":
         utils.turn_right(40) 
@@ -156,7 +158,7 @@ def gacha_collection(direction): # this is used for gachas that have snails or p
 
     if template.check_template("inventory",0.7) == False: # assuming that the bot didnt turn properly
         utils.zero()
-        utils.set_yaw(settings.station_yaw)
+        utils.set_yaw(metadata.yaw)
         if direction == "right":
             utils.turn_right(40) 
         else:

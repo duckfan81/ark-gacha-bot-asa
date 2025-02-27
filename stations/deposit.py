@@ -55,7 +55,8 @@ def dedi_deposit(height):
     utils.turn_up(30)
     utils.turn_right(10)
 
-def vault_deposit(side,items):
+def vault_deposit(items, metadata):
+    side = metadata.side
     if side == "left":
         utils.turn_left(90)
     else:
@@ -65,7 +66,7 @@ def vault_deposit(side,items):
     if template.template_sleep("vault",0.7,1) == False:
         ark.close_inventory()
         utils.zero()
-        utils.set_yaw(settings.station_yaw)
+        utils.set_yaw(metadata.yaw)
         if side == "left":
             utils.turn_left(90)
         else:
@@ -97,7 +98,7 @@ def drop_useless():
     utils.turn_down(80)
     time.sleep(0.5)
 
-def depo_grinder():
+def depo_grinder(metadata):
     utils.turn_right(180)
     time.sleep(0.5)
     ark.open_structure()
@@ -105,7 +106,7 @@ def depo_grinder():
     if template.template_sleep("grinder",0.7,1) == False:
         ark.close_inventory()
         utils.zero()
-        utils.set_yaw(settings.station_yaw)
+        utils.set_yaw(metadata.yaw)
         utils.turn_right(180)
         time.sleep(0.5)
         ark.open_structure()
@@ -124,7 +125,7 @@ def depo_grinder():
     time.sleep(0.8)
     utils.turn_right(180)
 
-def collect_grindables():
+def collect_grindables(metadata):
     time.sleep(0.4)
     utils.turn_right(90)
     time.sleep(0.8)
@@ -133,7 +134,7 @@ def collect_grindables():
     if template.template_sleep("grinder",0.7,1) == False:
         ark.close_inventory()
         utils.zero()
-        utils.set_yaw(settings.station_yaw)
+        utils.set_yaw(metadata.yaw)
         utils.turn_right(90)
         time.sleep(0.5)
         ark.open_structure()
@@ -154,29 +155,31 @@ def collect_grindables():
     drop_useless()
 
 
-def vaults():
+def vaults(metadata):
     vaults_data = load_resolution_data("json_files/vaults.json")
     for entry_vaults in vaults_data:
         name = entry_vaults["name"]
         side = entry_vaults["side"]
         items = entry_vaults["items"]
+        metadata.side = side
         discordbot.logger(f"openening up {name} on the {side} side to depo{items}")
-        vault_deposit(side,items)
+        vault_deposit(items,metadata)
 
-def deposit_all():
+def deposit_all(metadata):
     time.sleep(0.5)
     utils.pitch_zero()
-    utils.set_yaw(settings.station_yaw)
+    utils.set_yaw(metadata.yaw)
     discordbot.logger("opening crystals")
     open_crystals()
     discordbot.logger("depositing in ele dedi")
     dedi_deposit(settings.height_ele)
-    vaults()
+    vaults(metadata)
     if settings.height_grind != 0:
         discordbot.logger("depositing in grinder")
-        depo_grinder()
-        ark.teleport_not_default(settings.grindables)
+        depo_grinder(metadata)
+        grindables_metadata = ark.get_station_metadata(settings.grindables)
+        ark.teleport_not_default(grindables_metadata)
         discordbot.logger("collecting grindables")
-        collect_grindables()
+        collect_grindables(grindables_metadata)
     else:
         drop_useless()

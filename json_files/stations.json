@@ -1,0 +1,44 @@
+[
+    {
+        "name": "GACHAPAIR01",
+        "xpos": -1,
+        "ypos": -1,
+        "zpos": -1,
+        "yaw": 82,
+        "pitch": 0
+    },
+    {
+        "name": "GACHAPAIR2",
+        "xpos": -1,
+        "ypos": -1,
+        "zpos": -1,
+        "yaw": 142,
+        "pitch": 0
+    },
+    {
+        "name": "GACHAPAIR3",
+        "xpos": -1,
+        "ypos": -1,
+        "zpos": -1,
+        "yaw": -157,
+        "pitch": 0
+    },
+    {
+        "name": "GACHAPAIR4",
+        "xpos": -1,
+        "ypos": -1,
+        "zpos": -1,
+        "yaw": 99,
+        "pitch": 0
+    },
+    {
+        "name": "gachapego01",
+        "xpos": -1,
+        "ypos": -1,
+        "zpos": -1,
+        "yaw": -100,
+        "pitch": 0
+    }
+    
+    
+]

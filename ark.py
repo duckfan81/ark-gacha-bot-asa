@@ -1,8 +1,10 @@
+import json
 import pyautogui
 import numpy as np
 import time
 import screen
 import discordbot
+from stations.stations import station_metadata
 import variables
 import settings
 import utils
@@ -185,7 +187,7 @@ def check_state():
 
     clear = False
     loopcount = 0
-    while not clear and loopcount < 3:   #loop in case multiple conditions exist (i.e. tribelog and tekpod)
+    while not clear and loopcount < 4:   #loop in case multiple conditions exist (i.e. tribelog and tekpod)
         clear = True
         loopcount += 1
         if template.check_template("beds_title",0.7):
@@ -213,8 +215,56 @@ def check_state():
             render.leave_tekpod()
             time.sleep(1)
             clear = False
-    if loopcount >= 3:
+
+    if loopcount >= 4:
         discordbot.logger("State could not be corrected")
+
+    return
+
+def get_custom_stations():
+    file_path = "json_files/stations.json"
+    try:
+        with open(file_path, 'r') as file:
+            data = file.read().strip()
+            if not data:
+                return []
+            return json.loads(data)
+    except (json.JSONDecodeError, FileNotFoundError) as e:
+        return []
+
+def get_station_metadata(teleporter_name:str):
+    global custom_stations
+    custom_stations = False
+    stationdata = station_metadata()
+    foundstation = False
+
+    all_stations = get_custom_stations()
+
+    if all_stations.count > 0:
+        custom_stations = True
+        for entry_station in all_stations:
+            if entry_station["name"] == teleporter_name:
+                stationdata.name = entry_station["name"]
+                stationdata.xpos = entry_station["xpos"]
+                stationdata.ypos = entry_station["ypos"]
+                stationdata.zpos = entry_station["zpos"]
+                stationdata.yaw  = entry_station["yaw"]
+                stationdata.pitch = entry_station["pitch"]
+                foundstation = True
+                break
+
+    if not foundstation:   #setting up default station metadata
+        stationdata.name = teleporter_name
+        stationdata.xpos = 0
+        stationdata.ypos = 0
+        stationdata.zpos = 0
+        stationdata.yaw = settings.station_yaw
+        stationdata.pitch = 0
+
+    return stationdata
+
+
+
 
 
 def popcorn_inventory(item):
@@ -367,8 +417,14 @@ def bed_spawn_in(bed_name:str):
 
     
 
-def teleport_not_default(teleporter_name:str):
-    
+def teleport_not_default(arg):
+    if isinstance(arg, station_data):
+        stationdata = arg
+    else:
+        stationdata = get_station_metadata(arg:str)
+
+    teleporter_name = stationdata.name
+
     time.sleep(0.5)
     utils.turn_down(80)    # include the looking down part into the teleport as it is common for everytime
     time.sleep(0.3)
@@ -378,7 +434,7 @@ def teleport_not_default(teleporter_name:str):
         discordbot.logger("teleporter screen not found")
         check_state()
         utils.pitch_zero()
-        utils.set_yaw(settings.station_yaw)
+        utils.set_yaw(stationdata.yaw)
         utils.turn_down(80)
         time.sleep(0.2)
         utils.press_key("Use")
@@ -403,6 +459,8 @@ def teleport_not_default(teleporter_name:str):
     while white_flash() == True:    
         time.sleep(0.1)          # would cause a inf loop
     count = 0
+
+    utils.set_yaw(stationdata.yaw)
 
     while template.check_template_no_bounds("tribelog_check",0.8) == False and count < 100: # stopping inf loops 
         utils.press_key("ShowTribeManager")

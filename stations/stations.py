@@ -30,6 +30,18 @@ class base_task(ABC):
     def mark_as_run(self):
         self.has_run_before = True
 
+class station_metadata():
+    def __init__(self, name, xpos, ypos, zpos, yaw, pitch, side = None, resource = None):
+        super().__init__()
+        self.name = name
+        self.xpos = xpos
+        self.ypos = ypos
+        self.zpos = zpos
+        self.yaw = yaw
+        self.pitch = pitch
+        self.side = side
+        self.resource = resource
+
 class gacha_station(base_task):
     def __init__(self,name,teleporter_name,direction):
         super().__init__()
@@ -37,15 +49,23 @@ class gacha_station(base_task):
         self.teleporter_name = teleporter_name
         self.direction = direction
 
+
     def execute(self):
         ark.check_state()
         global berry_station
         global last_berry
+        global custom_stations
         temp = False
         time_between = time.time() - last_berry
 
+        gacha_metadata = ark.get_station_metadata(self.teleporter_name)
+        gacha_metadata.side = self.direction
+
+        berry_metadata = ark.get_station_metadata(settings.berry_station)
+        iguanadon_metadata = ark.get_station_metadata(settings.iguanadon)
+
         if (berry_station and (time_between > 4*60*60)) or time_between > 4*60*60: # if time is greater than 4 hours since the last time you went to berry station 
-            ark.teleport_not_default(settings.berry_station)                    # or if berry station is true( when you go to tekpod and drop all ) and the time between has been longer than 30 mins since youve last been 
+            ark.teleport_not_default(berry_metadata)                    # or if berry station is true( when you go to tekpod and drop all ) and the time between has been longer than 30 mins since youve last been 
             if settings.external_berry: 
                 discordbot.logger("sleeping for 20 seconds as external")
                 time.sleep(20)#letting station spawn in if you have to tp away
@@ -54,16 +74,16 @@ class gacha_station(base_task):
             berry_station = False
             temp = True
         
-        ark.teleport_not_default(settings.iguanadon) # iguanadon is a centeral tp
+        ark.teleport_not_default(iguanadon_metadata) # iguanadon is a centeral tp
         
         if settings.external_berry and temp: # quick fix for level 1 bug
             discordbot.logger("reconnecting because of level 1 bug - you chose external berry")
             ark.console_write("reconnect")
             time.sleep(60) # takes a while for the reonnect to actually go into action
 
-        gacha.iguanadon()
-        ark.teleport_not_default(self.teleporter_name)
-        gacha.gacha_dropoff(self.direction)
+        gacha.iguanadon(iguanadon_metadata)
+        ark.teleport_not_default(gacha_metadata)
+        gacha.gacha_dropoff(gacha_metadata)
 
     def get_priority_level(self):
         return 3
@@ -81,11 +101,15 @@ class pego_station(base_task):
 
     def execute(self):
         ark.check_state()
-        ark.teleport_not_default(self.teleporter_name)
-        pego.pego_pickup()
+        
+        pego_metadata = ark.get_station_metadata(self.teleporter_name)
+        dropoff_metadata = ark.get_station_metadata(settings.drop_off)
+
+        ark.teleport_not_default(pego_metadata)
+        pego.pego_pickup(pego_metadata)
         if template.check_template("crystal_in_hotbar",0.7):
-            ark.teleport_not_default(settings.drop_off) # everytime you collect you have to drop off makes sense to include it into here 
-            deposit.deposit_all()
+            ark.teleport_not_default(dropoff_metadata) # everytime you collect you have to drop off makes sense to include it into here 
+            deposit.deposit_all(dropoff_metadata)
         else:
             discordbot.logger(f"no crystals in hotbar not dropping off")
 
