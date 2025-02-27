@@ -165,7 +165,7 @@ def vaults():
 
 def deposit_all():
     time.sleep(0.5)
-    utils.zero()
+    utils.pitch_zero()
     utils.set_yaw(settings.station_yaw)
     discordbot.logger("opening crystals")
     open_crystals()

@@ -175,7 +175,6 @@ def check_disconected():
         close_tribelog()
         discordbot.logger("joined back into the server waiting 30 seconds to render everything ")
         time.sleep(60)
-        utils.yaw_zero()
         utils.set_yaw(settings.station_yaw)    
         
 def check_state():
@@ -192,7 +191,6 @@ def check_state():
         if template.check_template("beds_title",0.7):
             bed_spawn_in(settings.bed_spawn)
             time.sleep(0.5)
-            utils.yaw_zero()
             utils.set_yaw(settings.station_yaw)
             clear = False
     
@@ -379,7 +377,7 @@ def teleport_not_default(teleporter_name:str):
     if template.template_sleep("teleporter_title",0.7,2) == False:
         discordbot.logger("teleporter screen not found")
         check_state()
-        utils.zero()
+        utils.pitch_zero()
         utils.set_yaw(settings.station_yaw)
         utils.turn_down(80)
         time.sleep(0.2)

@@ -24,7 +24,6 @@ def berry_station():
 def iguanadon():
     #put berries in
     time.sleep(0.2)
-    utils.zero()
     utils.set_yaw(settings.station_yaw)
     time.sleep(0.2)
     ark.open_structure()
