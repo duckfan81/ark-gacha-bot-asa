@@ -418,7 +418,7 @@ def bed_spawn_in(bed_name:str):
     
 
 def teleport_not_default(arg):
-    if isinstance(arg, station_data):
+    if isinstance(arg, station_metadata):
         stationdata = arg
     else:
         stationdata = get_station_metadata(arg:str)
