@@ -30,18 +30,6 @@ class base_task(ABC):
     def mark_as_run(self):
         self.has_run_before = True
 
-class station_metadata():
-    def __init__(self, name, xpos, ypos, zpos, yaw, pitch, side = None, resource = None):
-        super().__init__()
-        self.name = name
-        self.xpos = xpos
-        self.ypos = ypos
-        self.zpos = zpos
-        self.yaw = yaw
-        self.pitch = pitch
-        self.side = side
-        self.resource = resource
-
 class gacha_station(base_task):
     def __init__(self,name,teleporter_name,direction):
         super().__init__()

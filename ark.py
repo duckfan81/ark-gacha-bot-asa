@@ -4,7 +4,6 @@ import numpy as np
 import time
 import screen
 import discordbot
-from stations.stations import station_metadata
 import variables
 import settings
 import utils
@@ -40,7 +39,19 @@ def ini():
     utils.press_key("Enter")
     time.sleep(0.3)
     pyautogui.scroll(10) # puts char in first person
-    
+
+class station_metadata():
+    def __init__(self, name, xpos, ypos, zpos, yaw, pitch, side = None, resource = None):
+        super().__init__()
+        self.name = name
+        self.xpos = xpos
+        self.ypos = ypos
+        self.zpos = zpos
+        self.yaw = yaw
+        self.pitch = pitch
+        self.side = side
+        self.resource = resource
+
 def open_tribelog():
     count = 0
     while template.check_template_no_bounds("tribelog_check",0.8) == False and count < 100: # stopping inf loops 
@@ -262,10 +273,6 @@ def get_station_metadata(teleporter_name:str):
         stationdata.pitch = 0
 
     return stationdata
-
-
-
-
 
 def popcorn_inventory(item):
     if template.check_template("inventory",0.7) == False:
