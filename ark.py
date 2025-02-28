@@ -41,16 +41,16 @@ def ini():
     pyautogui.scroll(10) # puts char in first person
 
 class station_metadata():
-    def __init__(self, name, xpos, ypos, zpos, yaw, pitch, side = None, resource = None):
+    def __init__(self):
         super().__init__()
-        self.name = name
-        self.xpos = xpos
-        self.ypos = ypos
-        self.zpos = zpos
-        self.yaw = yaw
-        self.pitch = pitch
-        self.side = side
-        self.resource = resource
+        self.name = None
+        self.xpos = None
+        self.ypos = None
+        self.zpos = None
+        self.yaw = None
+        self.pitch = 0
+        self.side = None
+        self.resource = None
 
 def open_tribelog():
     count = 0
@@ -251,7 +251,7 @@ def get_station_metadata(teleporter_name:str):
 
     all_stations = get_custom_stations()
 
-    if all_stations.count > 0:
+    if len(all_stations) > 0:
         custom_stations = True
         for entry_station in all_stations:
             if entry_station["name"] == teleporter_name:
@@ -260,7 +260,7 @@ def get_station_metadata(teleporter_name:str):
                 stationdata.ypos = entry_station["ypos"]
                 stationdata.zpos = entry_station["zpos"]
                 stationdata.yaw  = entry_station["yaw"]
-                stationdata.pitch = entry_station["pitch"]
+                #stationdata.pitch = entry_station["pitch"]
                 foundstation = True
                 break
 
