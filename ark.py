@@ -70,6 +70,16 @@ def close_tribelog():
             time.sleep(2)
     time.sleep(0.2)
 
+def close_teleporter():
+    if template.check_template_no_bounds("teleporter_title",0.7):
+        time.sleep(0.2)
+        windows.click(variables.get_pixel_loc("back_button_tp_x"),variables.get_pixel_loc("back_button_tp_y")) # now ready to do whatever we need to 
+        
+        if template.window_still_open_no_bounds("teleporter_title",0.7,2):
+            time.sleep(3) # guessing its timer
+            windows.click(variables.get_pixel_loc("back_button_tp_x"),variables.get_pixel_loc("back_button_tp_y"))
+            time.sleep(2)
+
 def open_inventory():
     if not template.check_template("inventory",0.7):
         utils.press_key("ShowMyInventory")
@@ -191,9 +201,9 @@ def check_disconected():
         utils.set_yaw(settings.station_yaw)    
         
 def check_state():
+    
     crash = reconnect.crash.crash(windows.hwnd)
     crash.crash_rejoin()  # wecheck the crash before disconected as we can rejoin back with disconect 
-
     check_disconected()
 
     clear = False
@@ -210,7 +220,12 @@ def check_state():
         if template.check_template_no_bounds("tribelog_check",0.7):
             close_tribelog()
             clear = False
-    
+        if template.check_template("inventory",0.7):
+            close_inventory()
+            clear = False
+        if template.check_template("teleporter_title",0.7):
+            close_teleporter()
+            
         type = buffs() 
         if type == 2 or render.render_flag:
             render.leave_tekpod()

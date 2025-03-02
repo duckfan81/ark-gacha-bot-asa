@@ -28,7 +28,9 @@ data = {
     "inv_slot_end_y": 435,
     "buff_button_x": 1280,
     "buff_button_y": 1180,
-    "drop_all_obj_x":1978
+    "drop_all_obj_x":1978,
+    "back_button_tp_x": 240,
+    "back_button_tp_y": 1285
 }
 
 def get_pixel_loc(location):
