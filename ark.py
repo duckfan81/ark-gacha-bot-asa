@@ -467,7 +467,7 @@ def teleport_not_default(arg):
         time.sleep(0.1)          # would cause a inf loop
     count = 0
 
-    utils.set_yaw(stationdata.yaw)
+    
 
     while template.check_template_no_bounds("tribelog_check",0.8) == False and count < 100: # stopping inf loops 
         utils.press_key("ShowTribeManager")
@@ -481,6 +481,7 @@ def teleport_not_default(arg):
         utils.current_pitch = 0
         utils.turn_down(80)
     utils.turn_up(80)
+    utils.set_yaw(stationdata.yaw)
     #utils.pitch_zero() # correcting pitch back to 0 from looking down at the tp
     time.sleep(0.4)
     utils.press_key("Run")
