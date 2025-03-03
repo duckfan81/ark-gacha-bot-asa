@@ -138,8 +138,11 @@ class snail_pheonix(base_task):
         self.depo_tp = depo
 
     def execute(self):
+        gacha_metadata = ark.get_station_metadata(self.teleporter_name)
+        gacha_metadata.side = self.direction
+
         ark.check_state()
-        ark.teleport_not_default(self.teleporter_name)
+        ark.teleport_not_default(gacha_metadata)
         gacha.gacha_collection(self.direction)
         ark.teleport_not_default(self.depo_tp)
         deposit.dedi_deposit(settings.height_ele)
