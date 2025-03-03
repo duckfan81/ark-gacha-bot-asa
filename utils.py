@@ -87,7 +87,11 @@ def normalize_yaw(yaw):
 
 def set_yaw(yaw):
     global current_yaw
-    
+    try:
+        current_yaw = float(ark.console_ccc()[3])
+    except Exception as e:
+        print(e)
+
     diff = ((yaw - current_yaw) + 180) % 360 - 180
     if diff < 0:
         turn_left(-diff)
@@ -115,9 +119,10 @@ def yaw_zero(ccc_data = None):
         else:
             turn_right(-float(ccc_data[3]))
         current_yaw = 0
-    except (TypeError, ValueError, IndexError) as e:
+    except Exception as e:
         print(f"error processing ccc_data[3]: {e}")
         #ark.check_state()
+
 def pitch_zero(ccc_data = None):
     global current_pitch
     
@@ -129,7 +134,7 @@ def pitch_zero(ccc_data = None):
         else:
             turn_up(-float(ccc_data[4]))
         current_pitch = 0
-    except (TypeError, ValueError, IndexError) as e:
+    except Exception as e:
         print(f"error processing ccc_data[4]: {e}")
         #ark.check_state()
 

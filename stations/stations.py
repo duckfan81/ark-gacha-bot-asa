@@ -143,7 +143,7 @@ class snail_pheonix(base_task):
 
         ark.check_state()
         ark.teleport_not_default(gacha_metadata)
-        gacha.gacha_collection(self.direction)
+        gacha.gacha_collection(gacha_metadata)
         ark.teleport_not_default(self.depo_tp)
         deposit.dedi_deposit(settings.height_ele)
         
