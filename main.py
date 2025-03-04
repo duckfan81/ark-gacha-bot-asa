@@ -167,8 +167,8 @@ async def start(interaction: discord.Interaction):
 
     logchn = bot.get_channel(settings.log_channel_gacha) 
     if logchn:
-        await logchn.send(f'online and ready')
-    print (f'logged in as {bot.user}')
+        await logchn.send(f'bot starting up now')
+    
     # resetting log files
     with open("txt_files/logs.txt", 'w') as file:
         file.write(f"")
