@@ -11,6 +11,7 @@ roi_regions = {
     "console": {"start_x":0, "start_y":1400 ,"width":50 ,"height":40},
     "crop_plot": {"start_x":1100, "start_y":250 ,"width":310 ,"height":150},
     "crystal_in_hotbar": {"start_x":750, "start_y":1250 ,"width":1060 ,"height":250},
+    "crystal_in_inventory": {"start_x":200, "start_y":300 ,"width":700 ,"height":250},
     "death_regions": {"start_x":100, "start_y":100 ,"width":700 ,"height":200},
     "dedi": {"start_x":1100, "start_y":245 ,"width":355 ,"height":70},
     "vault": {"start_x":1100, "start_y":245 ,"width":355 ,"height":150},

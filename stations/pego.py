@@ -27,3 +27,15 @@ def pego_pickup(metadata):
     time.sleep(0.5)
     utils.turn_down(utils.current_pitch)
     time.sleep(0.2)
+
+def populate_hotbar():
+    ark.open_inventory()
+    ark.search_in_inventory("crystal")
+    time.sleep(0.2)
+    if template.check_template("crystal_in_inventory",0.7):
+        windows.click(variables.get_pixel_loc("inv_slot_start_x")+50,variables.get_pixel_loc("inv_slot_start_y")+70)
+        for x in range(10):
+            utils.press_key(f"UseItem{x+1}")
+            time.sleep(0.2)
+    ark.close_inventory()
+    time.sleep(0.2)

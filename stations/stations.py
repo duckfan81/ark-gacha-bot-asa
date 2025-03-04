@@ -96,6 +96,7 @@ class pego_station(base_task):
         ark.teleport_not_default(pego_metadata)
         pego.pego_pickup(pego_metadata)
         if template.check_template("crystal_in_hotbar",0.7):
+            pego.populate_hotbar()
             ark.teleport_not_default(dropoff_metadata) # everytime you collect you have to drop off makes sense to include it into here 
             deposit.deposit_all(dropoff_metadata)
         else:
