@@ -55,9 +55,7 @@ def iguanadon(metadata):
     utils.press_key("Use")
     time.sleep(1) # wait time where iguanadon doesnt do anything
     ark.open_structure()
-    if template.template_sleep("inventory",0.7,2) == False:
-        ark.open_structure()
-    if template.check_template("inventory",0.7):    
+    if template.template_sleep("inventory",0.7,2):
         ark.search_in_object("seed")
         ark.transfer_all_from()
         time.sleep(0.5)
