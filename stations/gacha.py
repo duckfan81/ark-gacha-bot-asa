@@ -34,14 +34,15 @@ def iguanadon(metadata):
         ark.open_structure()
         time.sleep(0.2)
     time.sleep(0.3)
-    ark.transfer_all_from() # transfering all berries currently inside
-    time.sleep(0.3)
-    ark.search_in_inventory(settings.berry_type)#iguanadon has 1450 weight for the 145 stacks of berries
-    ark.transfer_all_inventory()
-    time.sleep(0.3)
-    ark.drop_all_inv()
-    time.sleep(0.4)
-    ark.close_inventory()
+    if template.check_template("inventory",0.7):    
+        ark.transfer_all_from() # transfering all berries currently inside
+        time.sleep(0.3)
+        ark.search_in_inventory(settings.berry_type)#iguanadon has 1450 weight for the 145 stacks of berries
+        ark.transfer_all_inventory()
+        time.sleep(0.3)
+        ark.drop_all_inv()
+        time.sleep(0.4)
+        ark.close_inventory()
     time.sleep(0.2)
     if template.template_sleep("seed_inv",0.7,2) == False :
         ark.open_structure()
@@ -54,12 +55,11 @@ def iguanadon(metadata):
     utils.press_key("Use")
     time.sleep(1) # wait time where iguanadon doesnt do anything
     ark.open_structure()
-    if template.template_sleep("inventory",0.7,2) == False:
-        ark.open_structure()
-    ark.search_in_object("seed")
-    ark.transfer_all_from()
-    time.sleep(0.5)
-    ark.close_inventory()
+    if template.template_sleep("inventory",0.7,2):
+        ark.search_in_object("seed")
+        ark.transfer_all_from()
+        time.sleep(0.5)
+        ark.close_inventory()
     time.sleep(0.2)
 
 def gacha_dropoff(metadata):
@@ -116,12 +116,12 @@ def gacha_dropoff(metadata):
 
     time.sleep(0.3)
     ark.open_structure()
-    template.template_sleep("crop_plot",0.7,2)
-    ark.transfer_all_from()
-    time.sleep(0.2)
-    ark.transfer_all_inventory() #take out all input all # refreshing owl pelletes
-    time.sleep(0.2)
-    ark.close_inventory()
+    if template.template_sleep("crop_plot",0.7,2):
+        ark.transfer_all_from()
+        time.sleep(0.2)
+        ark.transfer_all_inventory() #take out all input all # refreshing owl pelletes
+        time.sleep(0.2)
+        ark.close_inventory()
     time.sleep(0.4)
 
     if direction == "right":
