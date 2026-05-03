@@ -73,138 +73,221 @@ def ctrl_a(): # hotkey for sending ctrl a
 FUNCTIONS FOR MOUSE MOVEMENT
 """
 
-current_yaw = 0
-current_pitch = 0
-player_pitch_minimum = -80
-player_pitch_max = 87
+current_yaw = 0.0
+current_pitch = 0.0
 
-def normalize_yaw(yaw):
-    yaw = (yaw % 360 + 360) % 360
-    if (yaw > 180):
+PLAYER_PITCH_MINIMUM = -80.0
+PLAYER_PITCH_MAX = 87.0
+
+
+def normalize_yaw(yaw: float) -> float:
+    yaw = (float(yaw) % 360 + 360) % 360
+
+    if yaw > 180:
         yaw -= 360
-    return yaw 
 
-def set_yaw(yaw):
-    global current_yaw    
+    return yaw
+
+
+def clamp_pitch(pitch: float) -> float:
+    return max(PLAYER_PITCH_MINIMUM, min(float(pitch), PLAYER_PITCH_MAX))
+
+
+def yaw_diff(target: float, current: float) -> float:
+    return ((float(target) - float(current)) + 180) % 360 - 180
+
+
+def read_yaw_pitch():
+    ccc_data = console.console_ccc()
+    return float(ccc_data[3]), float(ccc_data[4])
+
+
+def refresh_yaw_pitch() -> None:
+    global current_yaw
+    global current_pitch
+
     try:
-        logs.logger.debug(f"setting yaw as {float(console.console_ccc()[3])}")
-        current_yaw = float(console.console_ccc()[3])
+        current_yaw, current_pitch = read_yaw_pitch()
+        current_yaw = normalize_yaw(current_yaw)
+        current_pitch = clamp_pitch(current_pitch)
     except Exception as e:
-        logs.logger.error(f"error processing ccc_data[3]: {e}")
+        logs.logger.error(f"error reading yaw/pitch from ccc: {e}")
 
-    try:# had an issue where this was a string for some reason
-        target = float(yaw)    
-        current = float(current_yaw)
 
-        diff = ((target - current) + 180) % 360 - 180
+def set_yaw(yaw: float) -> None:
+    global current_yaw
+
+    refresh_yaw_pitch()
+
+    try:
+        target = normalize_yaw(float(yaw))
+        diff = yaw_diff(target, current_yaw)
+
         if diff < 0:
-            turn_left(-diff)
+            turn_left(abs(diff))
         else:
             turn_right(diff)
-        current_yaw = normalize_yaw(target)
-    except Exception as e:
-            logs.logger.error(f"error processing data into floats: {e}")
-def set_pitch(pitch):
-    global current_pitch
-    change = current_pitch - pitch 
-    if change < 0:
-        turn_up(-change)
-    else:
-        turn_down(change)
-    current_pitch = pitch
 
-def yaw_zero(ccc_data = None):
+        current_yaw = target
+
+    except Exception as e:
+        logs.logger.error(f"error setting yaw: {e}")
+
+
+def set_pitch(pitch: float) -> None:
+    global current_pitch
+
+    try:
+        target = clamp_pitch(float(pitch))
+        diff = target - float(current_pitch)
+
+        if diff > 0:
+            turn_up(diff)
+        elif diff < 0:
+            turn_down(abs(diff))
+
+        current_pitch = target
+
+    except Exception as e:
+        logs.logger.error(f"error setting pitch: {e}")
+
+
+def yaw_zero(ccc_data=None) -> None:
     global current_yaw
 
-    if ccc_data == None:
-        ccc_data = console.console_ccc()
     try:
-        if float(ccc_data[3]) > 0:
-            turn_left(float(ccc_data[3]))
+        if ccc_data is None:
+            ccc_data = console.console_ccc()
+
+        yaw = float(ccc_data[3])
+
+        if yaw > 0:
+            turn_left(yaw)
         else:
-            turn_right(-float(ccc_data[3]))
-        current_yaw = 0
+            turn_right(abs(yaw))
+
+        current_yaw = 0.0
+
     except Exception as e:
         logs.logger.error(f"error processing ccc_data[3]: {e}")
-        #ark.check_state()
 
-def pitch_zero(ccc_data = None):
+
+def pitch_zero(ccc_data=None) -> None:
     global current_pitch
-    
-    if ccc_data == None:
-        ccc_data = console.console_ccc()
+
     try:
-        if float(ccc_data[4]) > 0:
-            turn_down(float(ccc_data[4]))
+        if ccc_data is None:
+            ccc_data = console.console_ccc()
+
+        pitch = float(ccc_data[4])
+
+        if pitch > 0:
+            turn_down(pitch)
         else:
-            turn_up(-float(ccc_data[4]))
-        current_pitch = 0
+            turn_up(abs(pitch))
+
+        current_pitch = 0.0
+
     except Exception as e:
         logs.logger.error(f"error processing ccc_data[4]: {e}")
-        #ark.check_state()
 
-def zero():
+
+def zero() -> None:
     logs.logger.debug("setting view angles back to 0")
-    global current_yaw
-    global current_pitch
+
     ccc_data = console.console_ccc()
 
     yaw_zero(ccc_data)
     pitch_zero(ccc_data)
-    
+
+
 def get_yaw_pitch():
+    global current_yaw
     global current_pitch
+
+    current_yaw, current_pitch = read_yaw_pitch()
+    current_yaw = normalize_yaw(current_yaw)
+    current_pitch = clamp_pitch(current_pitch)
+
+    return current_yaw, current_pitch
+
+
+def turn_right(degrees: float) -> None:
     global current_yaw
-    ccc_data = console.console_ccc()
-    current_yaw = float(ccc_data[3])
-    current_pitch = float(ccc_data[4])
-    return ccc_data[3],ccc_data[4] # yaw , pitch
-    
-def turn_right(degrees):
-    global current_yaw
+
+    degrees = abs(float(degrees))
+
     windows.turn(degrees, 0)
-    current_yaw = float(current_yaw)
-    current_yaw = normalize_yaw(current_yaw + degrees)
-    
 
-def turn_left(degrees):
+    current_yaw = normalize_yaw(float(current_yaw) + degrees)
+
+
+def turn_left(degrees: float) -> None:
     global current_yaw
+
+    degrees = abs(float(degrees))
+
     windows.turn(-degrees, 0)
-    current_yaw = float(current_yaw)
-    current_yaw = normalize_yaw(current_yaw + (-degrees))
-    
 
-def turn_down(degrees):
+    current_yaw = normalize_yaw(float(current_yaw) - degrees)
+
+
+def turn_down(degrees: float) -> None:
     global current_pitch
-    current_pitch = float(current_pitch)
-    allowed = min(abs(player_pitch_minimum - current_pitch), degrees)
+
+    degrees = abs(float(degrees))
+    current_pitch = clamp_pitch(current_pitch)
+
+    allowed = min(current_pitch - PLAYER_PITCH_MINIMUM, degrees)
+
+    if allowed <= 0:
+        return
+
     windows.turn(0, allowed)
-    current_pitch -= allowed
+
+    current_pitch = clamp_pitch(current_pitch - allowed)
 
 
-def turn_up(degrees):
+def turn_up(degrees: float) -> None:
     global current_pitch
-    current_pitch = float(current_pitch)
-    allowed = min(abs(player_pitch_max - current_pitch), degrees)
-    windows.turn(0, -allowed)
-    current_pitch += allowed
 
-def turn_to(yaw,pitch):
+    degrees = abs(float(degrees))
+    current_pitch = clamp_pitch(current_pitch)
+
+    allowed = min(PLAYER_PITCH_MAX - current_pitch, degrees)
+
+    if allowed <= 0:
+        return
+
+    windows.turn(0, -allowed)
+
+    current_pitch = clamp_pitch(current_pitch + allowed)
+
+
+def turn_to(yaw: float, pitch: float) -> None:
     global current_yaw
     global current_pitch
-    inital_pitch = current_pitch
-    inital_yaw = current_yaw
 
-    diff_pitch = inital_pitch 
-    diff_yaw = ((yaw - inital_yaw) + 180) % 360 - 180
-    if diff_yaw < 0:
-        turn_left(-diff_yaw)
-    else:
-        turn_right(diff_yaw)
-    current_yaw = yaw
-    diff_pitch = inital_pitch - pitch
-    if diff_pitch > 0:
-        turn_up(-diff_pitch)
-    else:
-        turn_down(diff_pitch)
-    current_pitch = pitch
+    try:
+        target_yaw = normalize_yaw(float(yaw))
+        target_pitch = clamp_pitch(float(pitch))
+
+        diff_yaw = yaw_diff(target_yaw, current_yaw)
+
+        if diff_yaw < 0:
+            turn_left(abs(diff_yaw))
+        else:
+            turn_right(diff_yaw)
+
+        diff_pitch = target_pitch - current_pitch
+
+        if diff_pitch > 0:
+            turn_up(diff_pitch)
+        elif diff_pitch < 0:
+            turn_down(abs(diff_pitch))
+
+        current_yaw = target_yaw
+        current_pitch = target_pitch
+
+    except Exception as e:
+        logs.logger.error(f"error turning to yaw/pitch: {e}")
