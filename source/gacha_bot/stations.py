@@ -59,8 +59,10 @@ class gacha_station(base_task):
             #else we need to go to render and fast travel
             time.sleep(0.2)
             bed.fast_travel(self.teleporter_name)
-            gacha.y_trap_harvest()
-            
+            if settings.y_trap_bot_pairs:
+                gacha.y_trap_harvest(gacha_metadata.side)
+            else:
+                gacha.y_trap_harvest()
 
 
         else:

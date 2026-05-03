@@ -5,6 +5,7 @@ from source.logs import gachalogs as logs
 from source.ASA.strucutres import teleporter , inventory
 from source.ASA.stations import custom_stations
 from source.ASA.player import player_inventory , player_state ,console
+from source.ASA.stations import y_trap_layout
 import source.gacha_bot.config 
 import source.gacha_bot.structures.crop_plots as crop_plots
 
@@ -229,8 +230,6 @@ def iguanadon_gacha(metadata):
     #  
     #
     #
-
-
 def y_trap_harvest():
     #fast travel to next gacha 
     yaw,pitch = utils.get_yaw_pitch() # this is the beds view pitch will be 0 
@@ -262,3 +261,56 @@ def y_trap_harvest():
     utils.turn_down(80)
     time.sleep(0.2*settings.lag_offset)
 
+def y_trap_harvest(side: str) -> None:
+    side = side.lower()
+
+    # Starts facing middle crop stack.
+
+    # Face assigned gacha and pull owl pellets.
+    y_trap_layout.face_gacha_from_middle_crop(side)
+    time.sleep(0.2*settings.lag_offset)
+
+    inventory.open()
+    inventory.transfer_all_from()
+    inventory.close()
+    time.sleep(0.2*settings.lag_offset)
+
+    # Go directly from gacha to assigned side crop stack.
+    y_trap_layout.face_side_stack_from_gacha(side)
+    time.sleep(0.2*settings.lag_offset)
+
+    crop_plots.harvest_stack()
+
+    # Turn from side stack to middle stack.
+    y_trap_layout.face_middle_crop_from_side_stack(side)
+    time.sleep(0.2*settings.lag_offset)
+
+    # Harvest assigned half of middle stack.
+    if side == "left":
+        crop_plots.harvest_stack(
+            start_index=0,
+            stop_index=crop_plots.MIDDLE_STACK_SPLIT_INDEX,
+        )
+    elif side == "right":
+        crop_plots.harvest_stack(
+            start_index=crop_plots.MIDDLE_STACK_SPLIT_INDEX,
+            stop_index=None,
+        )
+    else:
+        raise ValueError(f"Invalid gacha side: {side}")
+
+    # Currently facing middle crop stack.
+    # Face assigned gacha and feed.
+    y_trap_layout.face_gacha_from_middle_crop(side)
+    time.sleep(0.2*settings.lag_offset)
+
+    inventory.open()
+    player_inventory.search_in_inventory("y")
+    player_inventory.transfer_all_inventory()
+    player_inventory.transfer_all_inventory()
+    inventory.close()
+    time.sleep(0.2*settings.lag_offset)
+
+    # look down and enter into bed
+    utils.turn_down(80)
+    time.sleep(0.2*settings.lag_offset)

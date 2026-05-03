@@ -21,6 +21,7 @@
     "seeds_230": false,
     "side_crop_plot": false,
     "y_trap_bot": false,
+    "y_trap_bot_pairs": false,
     "log_channel_gacha": "",
     "log_active_queue": "",
     "log_wait_queue": "",
