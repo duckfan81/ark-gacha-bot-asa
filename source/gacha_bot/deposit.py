@@ -62,8 +62,11 @@ def vault_deposit(items, metadata):
     side = metadata.side
     if side == "right":
         turn_constant = 1
-    else:
+    elif side == "left":
         turn_constant = -1
+    elif side == "front":
+        turn_constant = 0
+
     utils.turn_right(90*turn_constant)
     time.sleep(0.2*settings.lag_offset)
     inventory.open()
@@ -180,11 +183,21 @@ def vaults(metadata):
 def deposit_all(metadata):
     #utils.pitch_zero()
     #utils.set_yaw(metadata.yaw) # its done this in the tp part to the dedis
+    vault_metadata = custom_stations.get_station_metadata(settings.vaults)
     logs.logger.debug("opening crystals")
     open_crystals()
     logs.logger.debug("depositing in ele dedi")
     dedi.dedi_deposit("deposit",settings.height_ele)
-    vaults(metadata)
+    utils.turn_right(90)
+    time.sleep(0.2*settings.lag_offset)
+    dedi.dedi_deposit("deposit",settings.height_ele)
+    utils.turn_right(180)
+    time.sleep(0.2*settings.lag_offset)
+    dedi.dedi_deposit("deposit",settings.height_ele)
+
+
+    teleporter.teleport_not_default(vault_metadata)
+    vaults(vault_metadata)
     if settings.height_grind != 0:
         logs.logger.debug("depositing in grinder")
         depo_grinder(metadata)
