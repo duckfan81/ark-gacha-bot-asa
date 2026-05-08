@@ -4,3 +4,12 @@
 settings.py
 /source/logs
 /json_files/backup2
+/.vs
+/.gitignore
+/.gitignore
+/.gitignore
+/json_files/settings.json
+/json_files/gacha.json
+/json_files/pego.json
+/json_files/stations.json
+/json_files/vaults.json
