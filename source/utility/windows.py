@@ -80,7 +80,7 @@ mouse_event.argtypes = [
     wintypes.DWORD,
     wintypes.DWORD,
     wintypes.DWORD,
-    ULONG_PTR
+    ULONG_PTR,
 ]
 mouse_event.restype = None
 
