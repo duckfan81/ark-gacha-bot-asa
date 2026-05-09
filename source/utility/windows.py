@@ -25,7 +25,6 @@ MAX_FOV = 1.25
 MIN_SCALE = 0.25
 MAX_SCALE = 4.0
 
-hwnd = None
 
 ULONG_PTR = ctypes.c_uint64 if ctypes.sizeof(ctypes.c_void_p) == 8 else ctypes.c_uint32
 
@@ -75,34 +74,17 @@ PostMessageW.argtypes = [wintypes.HWND, wintypes.UINT, wintypes.WPARAM, wintypes
 PostMessageW.restype = wintypes.BOOL
 
 mouse_event = ctypes.windll.user32.mouse_event
-mouse_event.argtypes = [
-    wintypes.DWORD,
-    wintypes.DWORD,
-    wintypes.DWORD,
-    wintypes.DWORD,
-    ULONG_PTR
-]
+mouse_event.argtypes = [wintypes.DWORD, wintypes.DWORD, wintypes.DWORD, wintypes.DWORD, ULONG_PTR]
 mouse_event.restype = None
 
 
 def find_window_by_title(title: str = WINDOW_TITLE) -> int:
-    global hwnd
-
     hwnd = FindWindowW(None, title)
 
     if not hwnd:
         raise RuntimeError(f"Window not found: {title}")
 
     return hwnd
-
-
-def get_hwnd(title: str = WINDOW_TITLE) -> int:
-    global hwnd
-
-    if hwnd:
-        return hwnd
-
-    return find_window_by_title(title)
 
 
 def _safe_ratio(max_value: float, current_value: float, name: str) -> float:
@@ -195,12 +177,12 @@ def move_mouse(x: int, y: int) -> None:
 
 
 def click(x: int, y: int, window_title: str = WINDOW_TITLE) -> None:
-    target_hwnd = get_hwnd(window_title)
+    hwnd = find_window_by_title(window_title)
 
     lparam = (y << 16) | x
 
-    if not PostMessageW(target_hwnd, WM_LBUTTONDOWN, 0, lparam):
+    if not PostMessageW(hwnd, WM_LBUTTONDOWN, 0, lparam):
         raise ctypes.WinError()
 
-    if not PostMessageW(target_hwnd, WM_LBUTTONUP, 0, lparam):
+    if not PostMessageW(hwnd, WM_LBUTTONUP, 0, lparam):
         raise ctypes.WinError()
