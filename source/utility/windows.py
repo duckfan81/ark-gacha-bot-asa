@@ -1,4 +1,5 @@
 import ctypes
+from logging import debug
 import time
 from ctypes import wintypes
 
@@ -92,7 +93,7 @@ def find_window_by_title(title: str = WINDOW_TITLE) -> int:
 
     if not hwnd:
         raise RuntimeError(f"Window not found: {title}")
-
+    debug(f"Found window '{title}' with handle: {hwnd}")
     return hwnd
 
 
